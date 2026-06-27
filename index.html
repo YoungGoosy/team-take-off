@@ -44,7 +44,7 @@
       content: "";
       position: fixed;
       inset: 0;
-      background-image: 
+      background-image:
         linear-gradient(0deg, transparent 24%, rgba(212, 175, 55, 0.05) 25%, rgba(212, 175, 55, 0.05) 26%, transparent 27%, transparent 74%, rgba(212, 175, 55, 0.05) 75%, rgba(212, 175, 55, 0.05) 76%, transparent 77%, transparent),
         linear-gradient(90deg, transparent 24%, rgba(212, 175, 55, 0.05) 25%, rgba(212, 175, 55, 0.05) 26%, transparent 27%, transparent 74%, rgba(212, 175, 55, 0.05) 75%, rgba(212, 175, 55, 0.05) 76%, transparent 77%, transparent);
       background-size: 50px 50px;
@@ -77,6 +77,27 @@
       margin: 0 auto;
       border-bottom: 2px solid var(--neon-pink);
       box-shadow: inset 0 -20px 40px rgba(255, 20, 147, 0.1);
+    }
+
+    .hero-top-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+    }
+
+    .match-nav {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .match-nav button.active {
+      background: rgba(255, 20, 147, 0.15);
+      color: var(--neon-pink);
+      border-color: var(--neon-pink);
+      box-shadow: inset 0 0 15px rgba(255, 20, 147, 0.2), 0 0 12px rgba(255, 20, 147, 0.25);
     }
 
     .eyebrow {
@@ -203,6 +224,61 @@
       font-size: 0.85rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
+    }
+
+    .weekly-lineup {
+      display: grid;
+      gap: 16px;
+    }
+
+    .weekly-lineup-row {
+      border: 1px solid rgba(255, 20, 147, 0.25);
+      border-radius: 8px;
+      padding: 14px;
+      background: rgba(255, 20, 147, 0.04);
+    }
+
+    .weekly-lineup-row h3 {
+      margin: 0 0 12px;
+      color: var(--neon-blue);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.95rem;
+    }
+
+    .weekly-lineup-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+    }
+
+    .weekly-lineup-card {
+      border: 1px solid rgba(255, 20, 147, 0.2);
+      border-radius: 6px;
+      background: rgba(255, 20, 147, 0.06);
+      padding: 10px;
+      min-height: 72px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .weekly-lineup-card .name {
+      font-weight: 900;
+      color: var(--neon-pink);
+      text-transform: uppercase;
+      font-size: 0.82rem;
+    }
+
+    .weekly-lineup-card .agent {
+      color: var(--text);
+      font-size: 0.9rem;
+    }
+
+    .weekly-lineup-card .agent.empty {
+      color: var(--text-muted);
+      font-style: italic;
     }
 
     .form-grid {
@@ -843,6 +919,14 @@
         gap: 20px;
       }
 
+      .hero-top-right {
+        align-items: stretch;
+      }
+
+      .match-nav {
+        justify-content: flex-start;
+      }
+
       .app {
         grid-template-columns: 1fr;
       }
@@ -894,14 +978,37 @@
     <h1>TEAM TAKE OFF</h1>
     <p class="sub">Weekly roster builder. Lock team compositions for 2 days per week. Full agent selection, double sentinel meta, save strats, and match history.</p>
   </div>
-  <div class="status-card">
-    <span id="lockBadge" class="badge unlocked">READY</span>
-    <strong id="matchTitle">MATCH SETUP</strong>
-    <small id="matchMeta" class="mini">Build your weekly roster</small>
+  <div class="hero-top-right">
+    <div class="match-nav">
+      <button id="match1Btn" class="ghost active">Match 1</button>
+      <button id="match2Btn" class="ghost">Match 2</button>
+    </div>
+    <div class="status-card">
+      <span id="lockBadge" class="badge unlocked">READY</span>
+      <strong id="matchTitle">MATCH SETUP</strong>
+      <small id="matchMeta" class="mini">Build your weekly roster</small>
+    </div>
   </div>
 </header>
 
 <main class="app">
+<section class="panel wide" id="weeklyLineupPanel">
+  <div class="head">
+    <h2>📌 Weekly Lineup</h2>
+    <span class="mini">Auto-refreshes every 10s</span>
+  </div>
+  <div class="weekly-lineup">
+    <div class="weekly-lineup-row">
+      <h3>Weekly Lineup 1</h3>
+      <div id="weeklyLineup1" class="weekly-lineup-cards"></div>
+    </div>
+    <div class="weekly-lineup-row">
+      <h3>Weekly Lineup 2</h3>
+      <div id="weeklyLineup2" class="weekly-lineup-cards"></div>
+    </div>
+  </div>
+</section>
+
 <section class="panel wide">
   <div class="head">
     <h2>📅 Match Setup</h2>
@@ -968,7 +1075,7 @@
     <span id="mapNote" class="mini"></span>
   </div>
   <div id="recommendedGrid" class="recommended"></div>
-  <p class="hint">Double Sentinel meta for strong site lockdown & post-plant. Recommended comps are starting points for your strat. You can still choose any agent. No duplicates allowed. App warns instead of forcing meta.</p>
+  <p class="hint">Double Sentinel meta for strong site lockdown & post-plant. Recommended comps are starting points for your strat. You can still choose any agent. No duplicates allowed. App warns on weak role balance.</p>
 </section>
 
 <section class="panel wide">
@@ -992,467 +1099,85 @@
 
 <script>
 const TEAM = ['Young_Goosy', 'Kaji', 'Toon', 'Eternal', 'Jolteon', 'Menkyo', 'White Toe'];
-const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-const MAPS = ['Abyss', 'Ascent', 'Bind', 'Breeze', 'Corrode', 'Fracture', 'Haven', 'Icebox', 'Lotus', 'Pearl', 'Split', 'Sunset'];
-const FALLBACK_AGENTS = [
-  ['Brimstone', 'Controller'], ['Viper', 'Controller'], ['Omen', 'Controller'], ['Killjoy', 'Sentinel'],
-  ['Cypher', 'Sentinel'], ['Sova', 'Initiator'], ['Sage', 'Sentinel'], ['Phoenix', 'Duelist'],
-  ['Jett', 'Duelist'], ['Reyna', 'Duelist'], ['Raze', 'Duelist'], ['Breach', 'Initiator'],
-  ['Skye', 'Initiator'], ['Yoru', 'Duelist'], ['Astra', 'Controller'], ['KAY/O', 'Initiator'],
-  ['Chamber', 'Sentinel'], ['Neon', 'Duelist'], ['Fade', 'Initiator'], ['Harbor', 'Controller'],
-  ['Gekko', 'Initiator'], ['Deadlock', 'Sentinel'], ['Iso', 'Duelist'], ['Clove', 'Controller'],
-  ['Vyse', 'Sentinel'], ['Tejo', 'Initiator'], ['Waylay', 'Duelist']
-].map(([displayName, role]) => ({ displayName, role, displayIcon: '', fullPortrait: '' }));
 
-const COMPS = {
-  Abyss: { agents: ['Raze', 'Omen', 'Killjoy', 'Cypher', 'Sova'], note: 'Double sentinel lockdown with entry duelist & recon. Strong anti-lurk setup.' },
-  Ascent: { agents: ['Raze', 'Omen', 'Chamber', 'Killjoy', 'KAY/O'], note: 'Chamber for operator defense + site coverage. Raze for aggressive sightline control.' },
-  Bind: { agents: ['Raze', 'Brimstone', 'Killjoy', 'Cypher', 'Gecko'], note: 'Double sentinel trap setup + explosive duelist. Heavy post-plant lockdown.' },
-  Breeze: { agents: ['Jett', 'Omen', 'Chamber', 'Cypher', 'Sova'], note: 'Jett mobility vs long sightlines + Chamber for operator spots. Double sentinel lurk denial.' },
-  Corrode: { agents: ['Raze', 'Omen', 'Killjoy', 'Cypher', 'Sova'], note: 'Double sentinel site anchor + explosive entry. Safe starter comp with solid utility.' },
-  Fracture: { agents: ['Raze', 'Brimstone', 'Chamber', 'Killjoy', 'Fade'], note: 'Chamber for operator crossfire. Double sentinel covers both A & B from vantage points.' },
-  Haven: { agents: ['Raze', 'Omen', 'Killjoy', 'Chamber', 'Sova'], note: 'Three-site lockdown with Chamber for site security + double sentinel coverage.' },
-  Icebox: { agents: ['Jett', 'Viper', 'Killjoy', 'Cypher', 'Harbor'], note: 'Viper/Harbor cross open space + double sentinel anchors. Jett vertical mobility crucial.' },
-  Lotus: { agents: ['Raze', 'Omen', 'Killjoy', 'Deadlock', 'Fade'], note: 'Double sentinel with Deadlock cages + Raze for space-taking executes.' },
-  Pearl: { agents: ['Jett', 'Astra', 'Killjoy', 'Cypher', 'Fade'], note: 'Astra for map control + double sentinel retake power. Strong site-locking utility.' },
-  Split: { agents: ['Raze', 'Omen', 'Chamber', 'Killjoy', 'Sova'], note: 'Chamber operator anchor on site. Double sentinel anti-lurk with Raze tight angle clears.' },
-  Sunset: { agents: ['Raze', 'Omen', 'Killjoy', 'Cypher', 'Breach'], note: 'Double sentinel site anchoring + Raze entry & flash setup. Strong mid pressure.' }
+const weeklyLineupEls = {
+  1: document.getElementById('weeklyLineup1'),
+  2: document.getElementById('weeklyLineup2')
 };
 
-let agents = [], selectedPlayers = TEAM.slice(0, 5), lineup = {}, locked = false, currentPicking = null;
-let weeklyRoster = {}; // { dayName: { playerName: agentName, ... }, ... }
-let weeklySchedule = { day1: null, day2: null }; // Track which 2 days are selected
+const matchButtons = {
+  1: document.getElementById('match1Btn'),
+  2: document.getElementById('match2Btn')
+};
 
-const $ = id => document.getElementById(id);
+const WEEKLY_LINEUP_KEY = 'weeklyLineupData_v1';
+let currentMatch = 1;
 
-const save = () => localStorage.setItem('takeoff-state', JSON.stringify({
-  selectedPlayers, lineup, locked, weeklyRoster, weeklySchedule,
-  opponent: $('opponent').value,
-  date: $('matchDate').value,
-  time: $('matchTime').value,
-  event: $('eventType').value,
-  map: $('mapSelect').value
-}));
-
-function toast(msg) {
-  const toastEl = $('toast');
-  toastEl.textContent = msg;
-  toastEl.classList.add('show');
-  setTimeout(() => toastEl.classList.remove('show'), 2800);
-}
-
-async function loadAgents() {
+function getWeeklyData() {
   try {
-    const response = await fetch('https://valorant-api.com/v1/agents?isPlayableCharacter=true');
-    const json = await response.json();
-    agents = json.data.map(a => ({
-      displayName: a.displayName,
-      role: a.role?.displayName || 'Unknown',
-      displayIcon: a.displayIcon,
-      fullPortrait: a.fullPortrait || a.displayIcon
-    })).sort((a, b) => a.displayName.localeCompare(b.displayName));
-  } catch (e) {
-    console.error('Agent API error:', e);
-    agents = FALLBACK_AGENTS;
-  }
-  renderAll();
-}
-
-function restore() {
-  MAPS.forEach(m => $('mapSelect').appendChild(new Option(m, m)));
-  const saved = JSON.parse(localStorage.getItem('takeoff-state') || 'null');
-  if (saved) {
-    selectedPlayers = saved.selectedPlayers || selectedPlayers;
-    lineup = saved.lineup || {};
-    locked = !!saved.locked;
-    weeklyRoster = saved.weeklyRoster || {};
-    weeklySchedule = saved.weeklySchedule || { day1: null, day2: null };
-    $('opponent').value = saved.opponent || '';
-    $('matchDate').value = saved.date || '';
-    $('matchTime').value = saved.time || '';
-    $('eventType').value = saved.event || 'Scrim';
-    $('mapSelect').value = saved.map || 'Ascent';
-  } else {
-    $('mapSelect').value = 'Ascent';
-    loadRecommended(false);
+    return JSON.parse(localStorage.getItem(WEEKLY_LINEUP_KEY)) || { 1: {}, 2: {} };
+  } catch {
+    return { 1: {}, 2: {} };
   }
 }
 
-function agentByName(n) {
-  return agents.find(a => a.displayName.toLowerCase() === String(n || '').toLowerCase())
-    || FALLBACK_AGENTS.find(a => a.displayName === n)
-    || { displayName: n || 'Pick Agent', role: '', fullPortrait: '', displayIcon: '' };
+function setWeeklyData(data) {
+  localStorage.setItem(WEEKLY_LINEUP_KEY, JSON.stringify(data));
 }
 
-function currentMap() {
-  return $('mapSelect').value || MAPS[0];
-}
+function renderWeeklyLineup() {
+  const data = getWeeklyData();
 
-function renderPlayers() {
-  $('playerCount').textContent = `${selectedPlayers.length}/5 active`;
-  $('playerGrid').innerHTML = TEAM.map(p => `<label class="player"><input type="checkbox" data-player="${p}" ${selectedPlayers.includes(p) ? 'checked' : ''} ${locked ? 'disabled' : ''}> <span>${p}</span></label>`).join('');
-  $('benchList').textContent = TEAM.filter(p => !selectedPlayers.includes(p)).join(', ') || 'None';
-  
-  document.querySelectorAll('[data-player]').forEach(cb => {
-    cb.addEventListener('change', e => {
-      const player = e.target.dataset.player;
-      if (e.target.checked) {
-        if (selectedPlayers.length >= 5) {
-          e.target.checked = false;
-          return toast('Only 5 players can be active.');
-        }
-        selectedPlayers.push(player);
-      } else {
-        selectedPlayers = selectedPlayers.filter(x => x !== player);
-        delete lineup[player];
-      }
-      save();
-      renderAll();
-    });
-  });
-}
+  [1, 2].forEach((week) => {
+    const root = weeklyLineupEls[week];
+    if (!root) return;
 
-function renderWeeklySchedule() {
-  $('weeklySchedule').innerHTML = DAYS.map(day => {
-    const isSelected = weeklySchedule.day1 === day || weeklySchedule.day2 === day;
-    const selectedCount = (weeklySchedule.day1 ? 1 : 0) + (weeklySchedule.day2 ? 1 : 0);
-    const canSelect = isSelected || selectedCount < 2;
-    
-    return `<div class="day-slot ${isSelected ? 'selected' : ''}" data-day="${day}">
-      <div class="day-header">
-        <span class="day-name">${day}</span>
-        <div class="day-toggle">
-          <label>${isSelected ? 'SELECTED' : 'SELECT'}</label>
-          <input type="checkbox" class="toggle-checkbox day-toggle-checkbox" data-day="${day}" ${isSelected ? 'checked' : ''} ${!canSelect && !isSelected ? 'disabled' : ''}>
+    root.innerHTML = TEAM.map((teammate) => {
+      const agent = data[week]?.[teammate] || '';
+      return `
+        <div class="weekly-lineup-card">
+          <div class="name">${teammate}</div>
+          <div class="agent ${agent ? '' : 'empty'}">${agent || 'No locked agent yet'}</div>
         </div>
-      </div>
-      <div class="team-roster-cards" data-day-cards="${day}"></div>
-    </div>`;
-  }).join('');
-
-  document.querySelectorAll('.day-toggle-checkbox').forEach(cb => {
-    cb.addEventListener('change', e => {
-      const day = e.target.dataset.day;
-      if (e.target.checked) {
-        if (!weeklySchedule.day1) {
-          weeklySchedule.day1 = day;
-        } else if (!weeklySchedule.day2) {
-          weeklySchedule.day2 = day;
-        }
-      } else {
-        if (weeklySchedule.day1 === day) weeklySchedule.day1 = null;
-        if (weeklySchedule.day2 === day) weeklySchedule.day2 = null;
-      }
-      save();
-      renderWeeklySchedule();
-      renderDayRosterCards();
-    });
-  });
-
-  renderDayRosterCards();
-}
-
-function renderDayRosterCards() {
-  const selectedDays = [weeklySchedule.day1, weeklySchedule.day2].filter(d => d);
-  
-  selectedDays.forEach(day => {
-    const container = document.querySelector(`[data-day-cards="${day}"]`);
-    if (!container) return;
-    
-    container.innerHTML = selectedPlayers.map(player => {
-      const agent = weeklyRoster[day]?.[player];
-      const agentObj = agent ? agentByName(agent) : { role: '', displayName: 'Pick' };
-      
-      return `<div class="roster-card ${agent ? 'active' : ''}" data-day="${day}" data-player="${player}">
-        <div class="roster-card-content">
-          <div class="player-name">${player}</div>
-          <div class="player-role">${agentObj.role || 'Role'}</div>
-          <div class="agent-selection">
-            <label>Agent</label>
-            <select class="day-agent-select" data-day="${day}" data-player="${player}">
-              <option value="">Pick Agent...</option>
-              ${agents.map(a => `<option value="${a.displayName}" ${agent === a.displayName ? 'selected' : ''}>${a.displayName}</option>`).join('')}
-            </select>
-          </div>
-        </div>
-      </div>`;
+      `;
     }).join('');
-
-    container.querySelectorAll('.day-agent-select').forEach(select => {
-      select.addEventListener('change', e => {
-        const day = e.target.dataset.day;
-        const player = e.target.dataset.player;
-        const agent = e.target.value;
-        
-        if (!weeklyRoster[day]) weeklyRoster[day] = {};
-        if (agent) {
-          weeklyRoster[day][player] = agent;
-        } else {
-          delete weeklyRoster[day][player];
-        }
-        save();
-        renderDayRosterCards();
-      });
-    });
   });
 }
 
-function renderLineup() {
-  $('lineupGrid').innerHTML = selectedPlayers.map(p => {
-    const agent = agentByName(lineup[p]);
-    const img = agent.fullPortrait || agent.displayIcon;
-    return `<div class="slot ${locked ? 'locked-slot' : ''}">
-      <div class="slot-top">
-        <span class="slot-player">${p}</span>
-        <span class="role-pill">${agent.role || 'Open'}</span>
-      </div>
-      <div class="agent-img" data-pick="${p}">
-        ${img ? `<img src="${img}" alt="${agent.displayName}">` : `<div class="empty">Click to pick<br><b>${agent.displayName}</b></div>`}
-      </div>
-      <div class="slot-bottom">
-        <button class="secondary" data-pick="${p}">${agent.displayName || 'Pick Agent'}</button>
-      </div>
-    </div>`;
-  }).join('');
-  
-  document.querySelectorAll('[data-pick]').forEach(el => {
-    el.addEventListener('click', () => openPicker(el.dataset.pick));
-  });
+function lockAgentForCurrentMatch(teammate, agent) {
+  if (!teammate || !agent) return;
+  const data = getWeeklyData();
+  if (!data[currentMatch]) data[currentMatch] = {};
+  data[currentMatch][teammate] = agent;
+  setWeeklyData(data);
+  renderWeeklyLineup();
 }
 
-function renderRecommended() {
-  const comp = COMPS[currentMap()] || COMPS.Ascent;
-  $('mapNote').textContent = comp.note;
-  $('recommendedGrid').innerHTML = comp.agents.map((name, i) => {
-    const agent = agentByName(name);
-    return `<div class="rec"><b>${i + 1}. ${agent.displayName}</b><span class="mini">${agent.role || ''}</span></div>`;
-  }).join('');
+function setActiveMatch(match) {
+  currentMatch = match;
+  matchButtons[1].classList.toggle('active', match === 1);
+  matchButtons[2].classList.toggle('active', match === 2);
+  document.getElementById('matchMeta').textContent = `Editing Weekly Lineup ${match}`;
+  document.getElementById('weeklyLineupPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-function renderStats() {
-  const counts = { Duelist: 0, Controller: 0, Initiator: 0, Sentinel: 0 };
-  Object.values(lineup).forEach(name => {
-    const role = agentByName(name).role;
-    if (counts[role] != null) counts[role]++;
-  });
+matchButtons[1].addEventListener('click', () => setActiveMatch(1));
+matchButtons[2].addEventListener('click', () => setActiveMatch(2));
 
-  $('roleStats').innerHTML = Object.entries(counts).map(([role, count]) =>
-    `<div class="stat"><span class="mini">${role}</span><strong>${count}</strong></div>`
-  ).join('');
+window.addEventListener('storage', (event) => {
+  if (event.key === WEEKLY_LINEUP_KEY) renderWeeklyLineup();
+});
 
-  let warnings = [];
-  if (selectedPlayers.length < 5) warnings.push('Choose 5 active players');
-  if (counts.Controller < 1) warnings.push('No Controller selected');
-  if (counts.Initiator < 1) warnings.push('No Initiator selected');
-  if (counts.Sentinel < 2) warnings.push('Less than 2 Sentinels (meta is 2)');
-  if (counts.Duelist < 1) warnings.push('No Duelist selected');
-  if (counts.Duelist > 2) warnings.push('More than 2 Duelists');
-  if (Object.keys(lineup).length < selectedPlayers.length) warnings.push('Some players need agents');
+setInterval(renderWeeklyLineup, 10000);
+renderWeeklyLineup();
 
-  $('warnings').innerHTML = warnings.length ? warnings.map(w => `<span class="warn">⚠ ${w}</span>`).join('') : '<span class="warn good">✅ Double sentinel comp ready</span>';
-
-  const rec = (COMPS[currentMap()] || COMPS.Ascent).agents;
-  let score = 0;
-  selectedPlayers.forEach(p => { if (rec.includes(lineup[p])) score++; });
-  $('metaScore').textContent = Math.round(score / 5 * 100) + '%';
-}
-
-function renderHistory() {
-  const history = JSON.parse(localStorage.getItem('takeoff-history') || '[]');
-  $('historyList').innerHTML = history.length ? history.map(x => `<div class="hist">
-    <b>${x.map} vs ${x.opponent || 'TBD'}</b>
-    <p class="mini">${x.date || ''} ${x.time || ''} • ${x.event}</p>
-    ${Object.entries(x.lineup).map(([p, a]) => `<div>${p} → ${a}</div>`).join('')}
-  </div>`).join('') : '<p class="mini">No locked comps yet.</p>';
-}
-
-function renderHeader() {
-  $('lockBadge').textContent = locked ? 'LOCKED' : 'READY';
-  $('lockBadge').className = 'badge ' + (locked ? 'locked' : 'unlocked');
-  $('matchTitle').textContent = ($('opponent').value ? `vs ${$('opponent').value}` : 'MATCH SETUP');
-  $('matchMeta').textContent = `${currentMap()} • ${$('eventType').value} • ${$('matchDate').value || 'No date'} ${$('matchTime').value || ''}`;
-}
-
-function renderAll() {
-  renderHeader();
-  renderPlayers();
-  renderWeeklySchedule();
-  renderLineup();
-  renderRecommended();
-  renderStats();
-  renderHistory();
-}
-
-function loadRecommended(doToast = true) {
-  const comp = (COMPS[currentMap()] || COMPS.Ascent).agents;
-  selectedPlayers.forEach((p, i) => lineup[p] = comp[i]);
-  if (doToast) toast('Recommended comp loaded');
-  save();
-  renderAll();
-}
-
-function openPicker(player) {
-  if (locked) return toast('Unlock the comp first.');
-  currentPicking = player;
-  $('modalTitle').textContent = `Pick Agent for ${player}`;
-  $('agentSearch').value = '';
-  renderAgentGrid();
-  $('agentModal').showModal();
-}
-
-function renderAgentGrid() {
-  const query = $('agentSearch').value.toLowerCase();
-  const roleFilter = $('roleFilter').value;
-  const used = new Set(Object.entries(lineup).filter(([p]) => p !== currentPicking).map(([, a]) => a));
-
-  const filtered = agents.filter(a => {
-    const matchesRole = roleFilter === 'All' || a.role === roleFilter;
-    const matchesQuery = query === '' || a.displayName.toLowerCase().includes(query);
-    return matchesRole && matchesQuery;
-  });
-
-  if (filtered.length === 0) {
-    $('agentGrid').innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 20px;">No agents found. Try different search terms.</p>';
-    return;
-  }
-
-  $('agentGrid').innerHTML = filtered.map(a => {
-    const disabled = used.has(a.displayName);
-    return `<div class="agent-card ${disabled ? 'disabled' : ''}" data-agent="${a.displayName}">
-      ${a.displayIcon ? `<img src="${a.displayIcon}" alt="${a.displayName}">` : ''}
-      <b>${a.displayName}</b>
-      <span>${disabled ? 'Already picked' : a.role}</span>
-    </div>`;
-  }).join('');
-
-  document.querySelectorAll('[data-agent]').forEach(card => {
-    card.addEventListener('click', () => {
-      if (card.classList.contains('disabled')) return toast('That agent is already picked.');
-      lineup[currentPicking] = card.dataset.agent;
-      $('agentModal').close();
-      save();
-      renderAll();
-    });
-  });
-}
-
-function summary() {
-  return `TEAM TAKE OFF - VALORANT LINEUP
-${$('eventType').value}${$('opponent').value ? ` vs ${$('opponent').value}` : ''}
-Map: ${currentMap()}
-Date: ${$('matchDate').value || 'TBD'} ${$('matchTime').value || ''}
-
-${selectedPlayers.map(p => `${p} - ${lineup[p] || 'OPEN'}`).join('\n')}
-
-Bench/Subs: ${TEAM.filter(p => !selectedPlayers.includes(p)).join(', ') || 'None'}`;
-}
-
-function copySummary() {
-  const text = summary();
-  
-  if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(text)
-      .then(() => toast('✓ Summary copied to clipboard'))
-      .catch(() => fallbackCopy(text));
-  } else {
-    fallbackCopy(text);
-  }
-}
-
-function fallbackCopy(text) {
-  const textarea = document.createElement('textarea');
-  textarea.value = text;
-  textarea.style.position = 'fixed';
-  textarea.style.left = '-999999px';
-  document.body.appendChild(textarea);
-  textarea.select();
-  try {
-    document.execCommand('copy');
-    toast('✓ Summary copied to clipboard');
-  } catch (err) {
-    toast('Failed to copy - try again');
-    console.error('Copy error:', err);
-  }
-  document.body.removeChild(textarea);
-}
-
-function bind() {
-  ['opponent', 'matchDate', 'matchTime', 'eventType', 'mapSelect'].forEach(id => {
-    $(id).addEventListener('change', () => { save(); renderAll(); });
-  });
-
-  $('loadRecommendedBtn').addEventListener('click', () => loadRecommended(true));
-  
-  $('saveMapCompBtn').addEventListener('click', () => {
-    localStorage.setItem('takeoff-map-' + currentMap(), JSON.stringify(lineup));
-    toast('Map comp saved');
-  });
-
-  $('loadSavedMapBtn').addEventListener('click', () => {
-    const saved = JSON.parse(localStorage.getItem('takeoff-map-' + currentMap()) || 'null');
-    if (!saved) return toast('No saved comp for this map yet.');
-    lineup = saved;
-    save();
-    renderAll();
-    toast('Saved map comp loaded');
-  });
-
-  $('lockBtn').addEventListener('click', () => {
-    if (selectedPlayers.length !== 5) return toast('Choose exactly 5 players first.');
-    locked = true;
-    const history = JSON.parse(localStorage.getItem('takeoff-history') || '[]');
-    history.unshift({
-      opponent: $('opponent').value,
-      date: $('matchDate').value,
-      time: $('matchTime').value,
-      event: $('eventType').value,
-      map: currentMap(),
-      lineup: { ...lineup },
-      at: new Date().toISOString()
-    });
-    localStorage.setItem('takeoff-history', JSON.stringify(history.slice(0, 50)));
-    save();
-    renderAll();
-    toast('✓ Comp locked + saved');
-  });
-
-  $('unlockBtn').addEventListener('click', () => {
-    locked = false;
-    save();
-    renderAll();
-    toast('Unlocked');
-  });
-
-  $('copyBtn').addEventListener('click', copySummary);
-
-  $('clearHistoryBtn').addEventListener('click', () => {
-    if (confirm('Clear all comp history?')) {
-      localStorage.removeItem('takeoff-history');
-      renderHistory();
-      toast('History cleared');
-    }
-  });
-
-  $('newMatchBtn').addEventListener('click', () => {
-    locked = false;
-    lineup = {};
-    $('opponent').value = '';
-    $('matchDate').value = '';
-    $('matchTime').value = '';
-    $('eventType').value = 'Scrim';
-    save();
-    renderAll();
-    toast('New match started');
-  });
-
-  $('closeModal').addEventListener('click', () => $('agentModal').close());
-  $('agentSearch').addEventListener('input', () => renderAgentGrid());
-  $('roleFilter').addEventListener('change', () => renderAgentGrid());
-}
-
-restore();
-bind();
-loadAgents();
+/*
+  Integration note:
+  Call lockAgentForCurrentMatch(teammateName, agentName)
+  wherever your existing lock-in flow finalizes a teammate agent pick.
+  Example:
+    lockAgentForCurrentMatch(selectedPlayerName, selectedAgentName);
+*/
 </script>
 </body>
 </html>
