@@ -650,6 +650,7 @@
       display: flex;
       gap: 12px;
       align-items: center;
+      flex-wrap: wrap;
     }
 
     .tools input, .tools select {
@@ -773,7 +774,7 @@
   <div class="head">
     <h2>🎮 Agent Select</h2>
     <div class="tools">
-      <input id="agentSearch" placeholder="Search agents" />
+      <input id="agentSearch" placeholder="Search agents (e.g. clove, chamber)" />
       <select id="roleFilter"><option value="All">All Roles</option><option>Duelist</option><option>Initiator</option><option>Controller</option><option>Sentinel</option></select>
     </div>
   </div>
@@ -1027,6 +1028,7 @@ function openPicker(player) {
   if (locked) return toast('Unlock the comp first.');
   currentPicking = player;
   $('modalTitle').textContent = `Pick Agent for ${player}`;
+  $('agentSearch').value = '';
   renderAgentGrid();
   $('agentModal').showModal();
 }
@@ -1036,16 +1038,25 @@ function renderAgentGrid() {
   const roleFilter = $('roleFilter').value;
   const used = new Set(Object.entries(lineup).filter(([p]) => p !== currentPicking).map(([, a]) => a));
 
-  $('agentGrid').innerHTML = agents
-    .filter(a => (roleFilter === 'All' || a.role === roleFilter) && a.displayName.toLowerCase().includes(query))
-    .map(a => {
-      const disabled = used.has(a.displayName);
-      return `<div class="agent-card ${disabled ? 'disabled' : ''}" data-agent="${a.displayName}">
-        ${a.displayIcon ? `<img src="${a.displayIcon}" alt="${a.displayName}">` : ''}
-        <b>${a.displayName}</b>
-        <span>${disabled ? 'Already picked' : a.role}</span>
-      </div>`;
-    }).join('');
+  const filtered = agents.filter(a => {
+    const matchesRole = roleFilter === 'All' || a.role === roleFilter;
+    const matchesQuery = query === '' || a.displayName.toLowerCase().includes(query);
+    return matchesRole && matchesQuery;
+  });
+
+  if (filtered.length === 0) {
+    $('agentGrid').innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 20px;">No agents found. Try different search terms.</p>';
+    return;
+  }
+
+  $('agentGrid').innerHTML = filtered.map(a => {
+    const disabled = used.has(a.displayName);
+    return `<div class="agent-card ${disabled ? 'disabled' : ''}" data-agent="${a.displayName}">
+      ${a.displayIcon ? `<img src="${a.displayIcon}" alt="${a.displayName}">` : ''}
+      <b>${a.displayName}</b>
+      <span>${disabled ? 'Already picked' : a.role}</span>
+    </div>`;
+  }).join('');
 
   document.querySelectorAll('[data-agent]').forEach(card => {
     card.addEventListener('click', () => {
@@ -1168,8 +1179,8 @@ function bind() {
   });
 
   $('closeModal').addEventListener('click', () => $('agentModal').close());
-  $('agentSearch').addEventListener('input', renderAgentGrid);
-  $('roleFilter').addEventListener('change', renderAgentGrid);
+  $('agentSearch').addEventListener('input', () => renderAgentGrid());
+  $('roleFilter').addEventListener('change', () => renderAgentGrid());
 }
 
 restore();
