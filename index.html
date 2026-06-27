@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Young Goosy Valorant Team Picker</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <header class="hero">
+    <div>
+      <p class="eyebrow">Young Goosy Premier</p>
+      <h1>VALORANT Team Comp Manager</h1>
+      <p class="sub">Recommended comps per map, full agent picker, no duplicate agents, match schedule, saved map comps, and lock history.</p>
+    </div>
+    <div class="status-card">
+      <span id="lockBadge" class="badge unlocked">Unlocked</span>
+      <strong id="matchTitle">New Match</strong>
+      <small id="matchMeta">Pick a map, choose 5, lock your comp.</small>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <section class="panel schedule-panel">
+      <div class="panel-head">
+        <h2>📅 Match Setup</h2>
+        <button id="newMatchBtn" class="ghost">New Match</button>
+      </div>
+      <div class="form-grid">
+        <label>Opponent<input id="opponent" placeholder="Team name" /></label>
+        <label>Date<input id="matchDate" type="date" /></label>
+        <label>Time<input id="matchTime" type="time" /></label>
+        <label>Event<select id="eventType"><option>Scrim</option><option>Premier</option><option>Tournament</option><option>Ranked 5 Stack</option></select></label>
+        <label>Map<select id="mapSelect"></select></label>
+      </div>
+      <div class="quick-actions">
+        <button id="loadRecommendedBtn">Load Recommended Comp</button>
+        <button id="saveMapCompBtn" class="secondary">Save Map Comp</button>
+        <button id="loadSavedMapBtn" class="secondary">Load Saved Map</button>
+      </div>
+    </section>
+
+    <section class="panel roster-panel">
+      <div class="panel-head">
+        <h2>👥 Choose 5 Players</h2>
+        <span id="playerCount" class="mini"></span>
+      </div>
+      <div id="playerGrid" class="player-grid"></div>
+      <div class="bench-box"><strong>Bench/Subs:</strong> <span id="benchList">None</span></div>
+    </section>
+
+    <section class="panel roles-panel">
+      <div class="panel-head">
+        <h2>📊 Team Check</h2>
+        <span id="metaScore" class="score">0%</span>
+      </div>
+      <div id="roleStats" class="role-stats"></div>
+      <div id="warnings" class="warnings"></div>
+    </section>
+
+    <section class="panel agent-panel wide">
+      <div class="panel-head">
+        <h2>🎮 Agent Select</h2>
+        <div class="tools">
+          <input id="agentSearch" placeholder="Search agents" />
+          <select id="roleFilter"><option value="All">All Roles</option><option>Duelist</option><option>Initiator</option><option>Controller</option><option>Sentinel</option></select>
+        </div>
+      </div>
+      <div id="lineupGrid" class="lineup-grid"></div>
+      <div class="lock-row">
+        <button id="lockBtn" class="danger">🔒 Lock Comp + Save History</button>
+        <button id="unlockBtn" class="ghost">Unlock</button>
+        <button id="copyBtn" class="secondary">Copy Discord Summary</button>
+      </div>
+    </section>
+
+    <section class="panel wide">
+      <div class="panel-head">
+        <h2>🗺️ Recommended Map Comp</h2>
+        <span id="mapNote" class="mini"></span>
+      </div>
+      <div id="recommendedGrid" class="recommended-grid"></div>
+      <p class="hint">Recommended comps are starting points. Your team can still choose any agent, and the app will warn instead of blocking unusual comps.</p>
+    </section>
+
+    <section class="panel wide">
+      <div class="panel-head">
+        <h2>📚 History</h2>
+        <button id="clearHistoryBtn" class="ghost">Clear History</button>
+      </div>
+      <div id="historyList" class="history-list"></div>
+    </section>
+  </main>
+
+  <dialog id="agentModal" class="agent-modal">
+    <div class="modal-head">
+      <div><h3 id="modalTitle">Pick Agent</h3><p id="modalSub"></p></div>
+      <button id="closeModal" class="ghost">✕</button>
+    </div>
+    <div id="agentGrid" class="agent-grid"></div>
+  </dialog>
+
+  <div id="toast" class="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
