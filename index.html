@@ -44,9 +44,9 @@
       content: "";
       position: fixed;
       inset: 0;
-      background-image:
-        linear-gradient(0deg, transparent 24%, rgba(212, 175, 55, 0.05) 25%, rgba(212, 175, 55, 0.05) 26%, transparent 27%, transparent 74%, rgba(212, 175, 55, 0.05) 75%, rgba(212, 175, 55, 0.05) 76%, transparent 77%, transparent),
-        linear-gradient(90deg, transparent 24%, rgba(212, 175, 55, 0.05) 25%, rgba(212, 175, 55, 0.05) 26%, transparent 27%, transparent 74%, rgba(212, 175, 55, 0.05) 75%, rgba(212, 175, 55, 0.05) 76%, transparent 77%, transparent);
+      background-image: 
+        linear-gradient(0deg, transparent 24%, rgba(212, 175, 55, 0.05) 25%, rgba(212, 175, 55, 0.05) 26%, transparent 27%, transparent 74%, rgba(212, 175, 55, 0.05) 75%, rgba(212, 175, 55, 0.05) [...]
+        linear-gradient(90deg, transparent 24%, rgba(212, 175, 55, 0.05) 25%, rgba(212, 175, 55, 0.05) 26%, transparent 27%, transparent 74%, rgba(212, 175, 55, 0.05) 75%, rgba(212, 175, 55, 0.05)[...]
       background-size: 50px 50px;
       pointer-events: none;
       z-index: 1;
@@ -77,27 +77,6 @@
       margin: 0 auto;
       border-bottom: 2px solid var(--neon-pink);
       box-shadow: inset 0 -20px 40px rgba(255, 20, 147, 0.1);
-    }
-
-    .hero-top-right {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 12px;
-    }
-
-    .match-nav {
-      display: flex;
-      gap: 8px;
-      justify-content: flex-end;
-      flex-wrap: wrap;
-    }
-
-    .match-nav button.active {
-      background: rgba(255, 20, 147, 0.15);
-      color: var(--neon-pink);
-      border-color: var(--neon-pink);
-      box-shadow: inset 0 0 15px rgba(255, 20, 147, 0.2), 0 0 12px rgba(255, 20, 147, 0.25);
     }
 
     .eyebrow {
@@ -224,61 +203,6 @@
       font-size: 0.85rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-    }
-
-    .weekly-lineup {
-      display: grid;
-      gap: 16px;
-    }
-
-    .weekly-lineup-row {
-      border: 1px solid rgba(255, 20, 147, 0.25);
-      border-radius: 8px;
-      padding: 14px;
-      background: rgba(255, 20, 147, 0.04);
-    }
-
-    .weekly-lineup-row h3 {
-      margin: 0 0 12px;
-      color: var(--neon-blue);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      font-size: 0.95rem;
-    }
-
-    .weekly-lineup-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 10px;
-    }
-
-    .weekly-lineup-card {
-      border: 1px solid rgba(255, 20, 147, 0.2);
-      border-radius: 6px;
-      background: rgba(255, 20, 147, 0.06);
-      padding: 10px;
-      min-height: 72px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 5px;
-    }
-
-    .weekly-lineup-card .name {
-      font-weight: 900;
-      color: var(--neon-pink);
-      text-transform: uppercase;
-      font-size: 0.82rem;
-    }
-
-    .weekly-lineup-card .agent {
-      color: var(--text);
-      font-size: 0.9rem;
-    }
-
-    .weekly-lineup-card .agent.empty {
-      color: var(--text-muted);
-      font-style: italic;
     }
 
     .form-grid {
@@ -919,14 +843,6 @@
         gap: 20px;
       }
 
-      .hero-top-right {
-        align-items: stretch;
-      }
-
-      .match-nav {
-        justify-content: flex-start;
-      }
-
       .app {
         grid-template-columns: 1fr;
       }
@@ -978,37 +894,14 @@
     <h1>TEAM TAKE OFF</h1>
     <p class="sub">Weekly roster builder. Lock team compositions for 2 days per week. Full agent selection, double sentinel meta, save strats, and match history.</p>
   </div>
-  <div class="hero-top-right">
-    <div class="match-nav">
-      <button id="match1Btn" class="ghost active">Match 1</button>
-      <button id="match2Btn" class="ghost">Match 2</button>
-    </div>
-    <div class="status-card">
-      <span id="lockBadge" class="badge unlocked">READY</span>
-      <strong id="matchTitle">MATCH SETUP</strong>
-      <small id="matchMeta" class="mini">Build your weekly roster</small>
-    </div>
+  <div class="status-card">
+    <span id="lockBadge" class="badge unlocked">READY</span>
+    <strong id="matchTitle">MATCH SETUP</strong>
+    <small id="matchMeta" class="mini">Build your weekly roster</small>
   </div>
 </header>
 
 <main class="app">
-<section class="panel wide" id="weeklyLineupPanel">
-  <div class="head">
-    <h2>📌 Weekly Lineup</h2>
-    <span class="mini">Auto-refreshes every 10s</span>
-  </div>
-  <div class="weekly-lineup">
-    <div class="weekly-lineup-row">
-      <h3>Weekly Lineup 1</h3>
-      <div id="weeklyLineup1" class="weekly-lineup-cards"></div>
-    </div>
-    <div class="weekly-lineup-row">
-      <h3>Weekly Lineup 2</h3>
-      <div id="weeklyLineup2" class="weekly-lineup-cards"></div>
-    </div>
-  </div>
-</section>
-
 <section class="panel wide">
   <div class="head">
     <h2>📅 Match Setup</h2>
@@ -1075,7 +968,7 @@
     <span id="mapNote" class="mini"></span>
   </div>
   <div id="recommendedGrid" class="recommended"></div>
-  <p class="hint">Double Sentinel meta for strong site lockdown & post-plant. Recommended comps are starting points for your strat. You can still choose any agent. No duplicates allowed. App warns on weak role balance.</p>
+  <p class="hint">Double Sentinel meta for strong site lockdown & post-plant. Recommended comps are starting points for your strat. You can still choose any agent. No duplicates allowed. App warn[...]
 </section>
 
 <section class="panel wide">
@@ -1099,85 +992,13 @@
 
 <script>
 const TEAM = ['Young_Goosy', 'Kaji', 'Toon', 'Eternal', 'Jolteon', 'Menkyo', 'White Toe'];
-
-const weeklyLineupEls = {
-  1: document.getElementById('weeklyLineup1'),
-  2: document.getElementById('weeklyLineup2')
-};
-
-const matchButtons = {
-  1: document.getElementById('match1Btn'),
-  2: document.getElementById('match2Btn')
-};
-
-const WEEKLY_LINEUP_KEY = 'weeklyLineupData_v1';
-let currentMatch = 1;
-
-function getWeeklyData() {
-  try {
-    return JSON.parse(localStorage.getItem(WEEKLY_LINEUP_KEY)) || { 1: {}, 2: {} };
-  } catch {
-    return { 1: {}, 2: {} };
-  }
-}
-
-function setWeeklyData(data) {
-  localStorage.setItem(WEEKLY_LINEUP_KEY, JSON.stringify(data));
-}
-
-function renderWeeklyLineup() {
-  const data = getWeeklyData();
-
-  [1, 2].forEach((week) => {
-    const root = weeklyLineupEls[week];
-    if (!root) return;
-
-    root.innerHTML = TEAM.map((teammate) => {
-      const agent = data[week]?.[teammate] || '';
-      return `
-        <div class="weekly-lineup-card">
-          <div class="name">${teammate}</div>
-          <div class="agent ${agent ? '' : 'empty'}">${agent || 'No locked agent yet'}</div>
-        </div>
-      `;
-    }).join('');
-  });
-}
-
-function lockAgentForCurrentMatch(teammate, agent) {
-  if (!teammate || !agent) return;
-  const data = getWeeklyData();
-  if (!data[currentMatch]) data[currentMatch] = {};
-  data[currentMatch][teammate] = agent;
-  setWeeklyData(data);
-  renderWeeklyLineup();
-}
-
-function setActiveMatch(match) {
-  currentMatch = match;
-  matchButtons[1].classList.toggle('active', match === 1);
-  matchButtons[2].classList.toggle('active', match === 2);
-  document.getElementById('matchMeta').textContent = `Editing Weekly Lineup ${match}`;
-  document.getElementById('weeklyLineupPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-matchButtons[1].addEventListener('click', () => setActiveMatch(1));
-matchButtons[2].addEventListener('click', () => setActiveMatch(2));
-
-window.addEventListener('storage', (event) => {
-  if (event.key === WEEKLY_LINEUP_KEY) renderWeeklyLineup();
-});
-
-setInterval(renderWeeklyLineup, 10000);
-renderWeeklyLineup();
-
-/*
-  Integration note:
-  Call lockAgentForCurrentMatch(teammateName, agentName)
-  wherever your existing lock-in flow finalizes a teammate agent pick.
-  Example:
-    lockAgentForCurrentMatch(selectedPlayerName, selectedAgentName);
-*/
+const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+const MAPS = ['Abyss', 'Ascent', 'Bind', 'Breeze', 'Corrode', 'Fracture', 'Haven', 'Icebox', 'Lotus', 'Pearl', 'Split', 'Sunset'];
+const FALLBACK_AGENTS = [
+  ['Brimstone', 'Controller'], ['Viper', 'Controller'], ['Omen', 'Controller'], ['Killjoy', 'Sentinel'],
+  ['Cypher', 'Sentinel'], ['Sova', 'Initiator'], ['Sage', 'Sentinel'], ['Phoenix', 'Duelist'],
+  ['Jett', 'Duelist'], ['Reyna', 'Duelist'], ['Raze', 'Duelist'], ['Breach', 'Initiator'],
+[...]
 </script>
 </body>
 </html>
