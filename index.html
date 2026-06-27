@@ -3,105 +3,1177 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Young Goosy Valorant Team Picker</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>TEAM TAKE OFF | Valorant Tactical Commander</title>
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --bg-light: #1a1a1a;
+      --panel: rgba(20, 10, 5, 0.9);
+      --panel-light: rgba(30, 15, 8, 0.95);
+      --text: #f5f5f5;
+      --text-muted: #b0b0b0;
+      --gold: #d4af37;
+      --gold-light: #e8c547;
+      --red: #cc0000;
+      --red-dark: #990000;
+      --red-accent: #ff0000;
+      --border: rgba(212, 175, 55, 0.2);
+      --border-hover: rgba(212, 175, 55, 0.4);
+      --shadow-gold: 0 0 20px rgba(212, 175, 55, 0.15);
+      --shadow-red: 0 0 20px rgba(204, 0, 0, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Courier New', monospace;
+      color: var(--text);
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a0a05 50%, #0f0a0a 100%);
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(0deg, transparent 24%, rgba(212, 175, 55, 0.05) 25%, rgba(212, 175, 55, 0.05) 26%, transparent 27%, transparent 74%, rgba(212, 175, 55, 0.05) 75%, rgba(212, 175, 55, 0.05) 76%, transparent 77%, transparent),
+        linear-gradient(90deg, transparent 24%, rgba(212, 175, 55, 0.05) 25%, rgba(212, 175, 55, 0.05) 26%, transparent 27%, transparent 74%, rgba(212, 175, 55, 0.05) 75%, rgba(212, 175, 55, 0.05) 76%, transparent 77%, transparent);
+      background-size: 50px 50px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 20% 50%, rgba(204, 0, 0, 0.1), transparent 50%),
+                  radial-gradient(circle at 80% 50%, rgba(212, 175, 55, 0.08), transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    header, main {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero {
+      display: flex;
+      gap: 30px;
+      justify-content: space-between;
+      align-items: stretch;
+      padding: 40px;
+      max-width: 1400px;
+      margin: 0 auto;
+      border-bottom: 2px solid var(--gold);
+      box-shadow: inset 0 -20px 40px rgba(212, 175, 55, 0.1);
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      color: var(--gold);
+      letter-spacing: 0.3em;
+      font-weight: 900;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 7vw, 6rem);
+      line-height: 1;
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+      text-shadow: 0 0 30px rgba(212, 175, 55, 0.3), 0 0 60px rgba(204, 0, 0, 0.2);
+      color: #f5f5f5;
+    }
+
+    .sub {
+      color: var(--text-muted);
+      max-width: 700px;
+      margin-top: 15px;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+    .status-card {
+      background: var(--panel-light);
+      border: 2px solid var(--gold);
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.2), inset 0 0 20px rgba(212, 175, 55, 0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 8px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-width: 280px;
+      text-align: center;
+    }
+
+    .badge {
+      width: max-content;
+      margin: 0 auto;
+      border-radius: 4px;
+      padding: 8px 16px;
+      font-weight: 900;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .unlocked {
+      background: rgba(212, 175, 55, 0.2);
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+    }
+
+    .locked {
+      background: rgba(204, 0, 0, 0.2);
+      color: var(--red-accent);
+      border: 1px solid var(--red-accent);
+      box-shadow: 0 0 10px rgba(204, 0, 0, 0.3);
+    }
+
+    .app {
+      position: relative;
+      max-width: 1400px;
+      margin: 0 auto 40px;
+      padding: 0 40px;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 20px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(212, 175, 55, 0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 8px;
+      padding: 24px;
+      transition: all 0.3s ease;
+    }
+
+    .panel:hover {
+      border-color: var(--border-hover);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(212, 175, 55, 0.08), 0 0 20px rgba(212, 175, 55, 0.1);
+    }
+
+    .wide {
+      grid-column: 1 / -1;
+    }
+
+    .head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .head h2 {
+      margin: 0;
+      font-size: 1.15rem;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .mini {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    input, select {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      border-radius: 4px;
+      padding: 12px;
+      outline: none;
+      font-family: 'Courier New', monospace;
+      transition: all 0.2s ease;
+    }
+
+    input:hover, select:hover {
+      border-color: var(--border-hover);
+      box-shadow: inset 0 0 10px rgba(212, 175, 55, 0.1);
+    }
+
+    input:focus, select:focus {
+      border-color: var(--gold);
+      box-shadow: inset 0 0 10px rgba(212, 175, 55, 0.15), 0 0 10px rgba(212, 175, 55, 0.2);
+      background: rgba(10, 10, 10, 0.8);
+    }
+
+    button {
+      border: 1px solid var(--gold);
+      border-radius: 4px;
+      padding: 12px 18px;
+      font-weight: 900;
+      color: var(--bg);
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: 'Courier New', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-size: 0.85rem;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(212, 175, 55, 0.35);
+      background: linear-gradient(135deg, var(--gold-light), var(--gold));
+    }
+
+    button:active {
+      transform: translateY(0);
+      box-shadow: 0 3px 10px rgba(212, 175, 55, 0.2);
+    }
+
+    button.secondary {
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      box-shadow: none;
+    }
+
+    button.secondary:hover {
+      background: rgba(212, 175, 55, 0.1);
+      box-shadow: inset 0 0 15px rgba(212, 175, 55, 0.2);
+    }
+
+    button.ghost {
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid var(--border);
+      box-shadow: none;
+    }
+
+    button.ghost:hover {
+      background: rgba(212, 175, 55, 0.08);
+      border-color: var(--border-hover);
+    }
+
+    button.danger {
+      background: linear-gradient(135deg, var(--red), var(--red-dark));
+      color: #fff;
+      border-color: var(--red-accent);
+      box-shadow: 0 5px 15px rgba(204, 0, 0, 0.3);
+    }
+
+    button.danger:hover {
+      box-shadow: 0 8px 25px rgba(204, 0, 0, 0.5);
+      background: linear-gradient(135deg, var(--red-accent), var(--red));
+    }
+
+    .quick, .lock-row, .tools {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .quick {
+      margin-top: 12px;
+    }
+
+    .players {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+    }
+
+    .player {
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: rgba(212, 175, 55, 0.03);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .player:hover {
+      background: rgba(212, 175, 55, 0.08);
+      border-color: var(--border-hover);
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.1);
+    }
+
+    .player input {
+      width: auto;
+      cursor: pointer;
+    }
+
+    .bench {
+      margin-top: 16px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: rgba(204, 0, 0, 0.05);
+      color: var(--text-muted);
+    }
+
+    .lineup {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+    }
+
+    .slot {
+      background: var(--panel-light);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .slot:hover {
+      border-color: var(--border-hover);
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+    }
+
+    .slot.locked-slot {
+      outline: 2px solid rgba(204, 0, 0, 0.4);
+    }
+
+    .slot-top {
+      padding: 12px;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      background: rgba(212, 175, 55, 0.05);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .slot-player {
+      font-weight: 900;
+      color: var(--gold);
+      font-size: 0.95rem;
+    }
+
+    .role-pill {
+      font-size: 0.7rem;
+      color: #000;
+      background: var(--gold);
+      border-radius: 2px;
+      padding: 4px 8px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .agent-img {
+      height: 180px;
+      display: flex;
+      align-items: end;
+      justify-content: center;
+      background: linear-gradient(160deg, rgba(204, 0, 0, 0.1), rgba(212, 175, 55, 0.05));
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .agent-img:hover {
+      background: linear-gradient(160deg, rgba(204, 0, 0, 0.15), rgba(212, 175, 55, 0.1));
+    }
+
+    .agent-img img {
+      max-height: 180px;
+      max-width: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 10px rgba(212, 175, 55, 0.1));
+    }
+
+    .agent-img .empty {
+      padding: 30px;
+      color: var(--text-muted);
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .slot-bottom {
+      padding: 12px;
+    }
+
+    .slot-bottom button {
+      width: 100%;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .stat {
+      padding: 16px;
+      border-radius: 4px;
+      background: rgba(212, 175, 55, 0.05);
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 2rem;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+
+    .warnings {
+      margin-top: 12px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .warn {
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      background: rgba(212, 175, 55, 0.08);
+      color: var(--gold);
+      border-radius: 3px;
+      padding: 8px 12px;
+      font-size: 0.8rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .good {
+      border-color: rgba(107, 255, 158, 0.3);
+      background: rgba(107, 255, 158, 0.08);
+      color: #6bff9e;
+    }
+
+    .recommended, .history {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+    }
+
+    .rec, .hist {
+      padding: 14px;
+      border: 1px solid var(--border);
+      background: rgba(212, 175, 55, 0.05);
+      border-radius: 4px;
+      transition: all 0.2s ease;
+    }
+
+    .rec:hover, .hist:hover {
+      background: rgba(212, 175, 55, 0.1);
+      border-color: var(--border-hover);
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.1);
+    }
+
+    .rec b, .hist b {
+      display: block;
+      color: var(--gold);
+      margin-bottom: 4px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .hist {
+      background: rgba(204, 0, 0, 0.05);
+    }
+
+    .hist b {
+      color: var(--red-accent);
+    }
+
+    .modal {
+      border: 2px solid var(--gold);
+      border-radius: 4px;
+      background: var(--bg);
+      color: var(--text);
+      max-width: 1000px;
+      width: 96%;
+      padding: 0;
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.9), 0 0 30px rgba(212, 175, 55, 0.3);
+    }
+
+    .modal::backdrop {
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-head {
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--gold);
+      background: rgba(212, 175, 55, 0.05);
+    }
+
+    .modal-head h3 {
+      margin: 0;
+      color: var(--gold);
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .agent-grid {
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 12px;
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+
+    .agent-card {
+      position: relative;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: rgba(212, 175, 55, 0.05);
+      padding: 10px;
+      cursor: pointer;
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+
+    .agent-card:hover {
+      background: rgba(212, 175, 55, 0.12);
+      border-color: var(--border-hover);
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+      transform: translateY(-3px);
+    }
+
+    .agent-card.disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      background: rgba(204, 0, 0, 0.05);
+    }
+
+    .agent-card.disabled:hover {
+      background: rgba(204, 0, 0, 0.05);
+      transform: none;
+    }
+
+    .agent-card img {
+      width: 100%;
+      height: 120px;
+      object-fit: contain;
+    }
+
+    .agent-card b {
+      display: block;
+      margin-top: 6px;
+      color: var(--gold);
+      font-weight: 900;
+      font-size: 0.85rem;
+    }
+
+    .agent-card span {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      display: block;
+      margin-top: 2px;
+    }
+
+    .toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      background: var(--panel-light);
+      border: 2px solid var(--gold);
+      border-radius: 4px;
+      padding: 14px 18px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      z-index: 1000;
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+      color: var(--gold);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 0.85rem;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hint {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-top: 12px;
+      padding: 12px;
+      border-left: 2px solid var(--gold);
+      background: rgba(212, 175, 55, 0.05);
+      border-radius: 2px;
+    }
+
+    .tools {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .tools input, .tools select {
+      flex: 1;
+      min-width: 150px;
+    }
+
+    @media (max-width: 1200px) {
+      .form-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .hero, .app {
+        padding: 20px;
+      }
+
+      .hero {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .hero, .app {
+        padding: 15px;
+      }
+
+      .agent-img {
+        height: 140px;
+      }
+
+      .agent-img img {
+        max-height: 140px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="bg-grid"></div>
-  <header class="hero">
-    <div>
-      <p class="eyebrow">Young Goosy Premier</p>
-      <h1>VALORANT Team Comp Manager</h1>
-      <p class="sub">Recommended comps per map, full agent picker, no duplicate agents, match schedule, saved map comps, and lock history.</p>
+<header class="hero">
+  <div>
+    <p class="eyebrow">TACTICAL COMMANDER</p>
+    <h1>TEAM TAKE OFF</h1>
+    <p class="sub">Valorant tactical comp manager. Recommended comps per map, full agent portrait picker, lock history, and saved strats.</p>
+  </div>
+  <div class="status-card">
+    <span id="lockBadge" class="badge unlocked">UNLOCKED</span>
+    <strong id="matchTitle">NEW MATCH</strong>
+    <small id="matchMeta" class="mini">Pick a map, choose 5, lock your comp.</small>
+  </div>
+</header>
+
+<main class="app">
+<section class="panel wide">
+  <div class="head">
+    <h2>📅 Match Setup</h2>
+    <button id="newMatchBtn" class="ghost">New Match</button>
+  </div>
+  <div class="form-grid">
+    <label>Opponent<input id="opponent" placeholder="Enemy team" /></label>
+    <label>Date<input id="matchDate" type="date" /></label>
+    <label>Time<input id="matchTime" type="time" /></label>
+    <label>Event<select id="eventType"><option>Scrim</option><option>Premier</option><option>Tournament</option><option>Ranked 5 Stack</option></select></label>
+    <label>Map<select id="mapSelect"></select></label>
+  </div>
+  <div class="quick">
+    <button id="loadRecommendedBtn">Load Recommended Comp</button>
+    <button id="saveMapCompBtn" class="secondary">Save Map Comp</button>
+    <button id="loadSavedMapBtn" class="secondary">Load Saved Map</button>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="head">
+    <h2>👥 Choose 5 Players</h2>
+    <span id="playerCount" class="mini"></span>
+  </div>
+  <div id="playerGrid" class="players"></div>
+  <div class="bench"><strong>Bench/Subs:</strong> <span id="benchList">None</span></div>
+</section>
+
+<section class="panel">
+  <div class="head">
+    <h2>📊 Team Check</h2>
+    <span id="metaScore" class="mini">0%</span>
+  </div>
+  <div id="roleStats" class="stats"></div>
+  <div id="warnings" class="warnings"></div>
+</section>
+
+<section class="panel wide">
+  <div class="head">
+    <h2>🎮 Agent Select</h2>
+    <div class="tools">
+      <input id="agentSearch" placeholder="Search agents" />
+      <select id="roleFilter"><option value="All">All Roles</option><option>Duelist</option><option>Initiator</option><option>Controller</option><option>Sentinel</option></select>
     </div>
-    <div class="status-card">
-      <span id="lockBadge" class="badge unlocked">Unlocked</span>
-      <strong id="matchTitle">New Match</strong>
-      <small id="matchMeta">Pick a map, choose 5, lock your comp.</small>
-    </div>
-  </header>
+  </div>
+  <div id="lineupGrid" class="lineup"></div>
+  <div class="lock-row">
+    <button id="lockBtn" class="danger">🔒 Lock Comp + Save History</button>
+    <button id="unlockBtn" class="ghost">Unlock</button>
+    <button id="copyBtn" class="secondary">📋 Copy Discord Summary</button>
+  </div>
+</section>
 
-  <main class="app-shell">
-    <section class="panel schedule-panel">
-      <div class="panel-head">
-        <h2>📅 Match Setup</h2>
-        <button id="newMatchBtn" class="ghost">New Match</button>
-      </div>
-      <div class="form-grid">
-        <label>Opponent<input id="opponent" placeholder="Team name" /></label>
-        <label>Date<input id="matchDate" type="date" /></label>
-        <label>Time<input id="matchTime" type="time" /></label>
-        <label>Event<select id="eventType"><option>Scrim</option><option>Premier</option><option>Tournament</option><option>Ranked 5 Stack</option></select></label>
-        <label>Map<select id="mapSelect"></select></label>
-      </div>
-      <div class="quick-actions">
-        <button id="loadRecommendedBtn">Load Recommended Comp</button>
-        <button id="saveMapCompBtn" class="secondary">Save Map Comp</button>
-        <button id="loadSavedMapBtn" class="secondary">Load Saved Map</button>
-      </div>
-    </section>
+<section class="panel wide">
+  <div class="head">
+    <h2>🗺️ Recommended Map Comp</h2>
+    <span id="mapNote" class="mini"></span>
+  </div>
+  <div id="recommendedGrid" class="recommended"></div>
+  <p class="hint">Recommended comps are starting points for your strat. You can still choose any agent. No duplicates allowed. App warns instead of forcing meta.</p>
+</section>
 
-    <section class="panel roster-panel">
-      <div class="panel-head">
-        <h2>👥 Choose 5 Players</h2>
-        <span id="playerCount" class="mini"></span>
-      </div>
-      <div id="playerGrid" class="player-grid"></div>
-      <div class="bench-box"><strong>Bench/Subs:</strong> <span id="benchList">None</span></div>
-    </section>
+<section class="panel wide">
+  <div class="head">
+    <h2>📚 Mission History</h2>
+    <button id="clearHistoryBtn" class="ghost">Clear History</button>
+  </div>
+  <div id="historyList" class="history"></div>
+</section>
+</main>
 
-    <section class="panel roles-panel">
-      <div class="panel-head">
-        <h2>📊 Team Check</h2>
-        <span id="metaScore" class="score">0%</span>
-      </div>
-      <div id="roleStats" class="role-stats"></div>
-      <div id="warnings" class="warnings"></div>
-    </section>
+<dialog id="agentModal" class="modal">
+  <div class="modal-head">
+    <div><h3 id="modalTitle">Pick Agent</h3><p id="modalSub" class="mini"></p></div>
+    <button id="closeModal" class="ghost">✕</button>
+  </div>
+  <div id="agentGrid" class="agent-grid"></div>
+</dialog>
 
-    <section class="panel agent-panel wide">
-      <div class="panel-head">
-        <h2>🎮 Agent Select</h2>
-        <div class="tools">
-          <input id="agentSearch" placeholder="Search agents" />
-          <select id="roleFilter"><option value="All">All Roles</option><option>Duelist</option><option>Initiator</option><option>Controller</option><option>Sentinel</option></select>
-        </div>
-      </div>
-      <div id="lineupGrid" class="lineup-grid"></div>
-      <div class="lock-row">
-        <button id="lockBtn" class="danger">🔒 Lock Comp + Save History</button>
-        <button id="unlockBtn" class="ghost">Unlock</button>
-        <button id="copyBtn" class="secondary">Copy Discord Summary</button>
-      </div>
-    </section>
+<div id="toast" class="toast"></div>
 
-    <section class="panel wide">
-      <div class="panel-head">
-        <h2>🗺️ Recommended Map Comp</h2>
-        <span id="mapNote" class="mini"></span>
+<script>
+const TEAM = ['Young_Goosy', 'Kaji', 'Toon', 'Eternal', 'Jolteon', 'Menkyo', 'White Toe'];
+const MAPS = ['Abyss', 'Ascent', 'Bind', 'Breeze', 'Corrode', 'Fracture', 'Haven', 'Icebox', 'Lotus', 'Pearl', 'Split', 'Sunset'];
+const FALLBACK_AGENTS = [
+  ['Brimstone', 'Controller'], ['Viper', 'Controller'], ['Omen', 'Controller'], ['Killjoy', 'Sentinel'],
+  ['Cypher', 'Sentinel'], ['Sova', 'Initiator'], ['Sage', 'Sentinel'], ['Phoenix', 'Duelist'],
+  ['Jett', 'Duelist'], ['Reyna', 'Duelist'], ['Raze', 'Duelist'], ['Breach', 'Initiator'],
+  ['Skye', 'Initiator'], ['Yoru', 'Duelist'], ['Astra', 'Controller'], ['KAY/O', 'Initiator'],
+  ['Chamber', 'Sentinel'], ['Neon', 'Duelist'], ['Fade', 'Initiator'], ['Harbor', 'Controller'],
+  ['Gekko', 'Initiator'], ['Deadlock', 'Sentinel'], ['Iso', 'Duelist'], ['Clove', 'Controller'],
+  ['Vyse', 'Sentinel'], ['Tejo', 'Initiator'], ['Waylay', 'Duelist']
+].map(([displayName, role]) => ({ displayName, role, displayIcon: '', fullPortrait: '' }));
+
+const COMPS = {
+  Abyss: { agents: ['Jett', 'Omen', 'Cypher', 'Sova', 'Breach'], note: 'Entry duelist, controller, anchor, recon, stun setup.' },
+  Ascent: { agents: ['Jett', 'Omen', 'Killjoy', 'Sova', 'KAY/O'], note: 'Strong mid control and classic execute utility.' },
+  Bind: { agents: ['Raze', 'Brimstone', 'Viper', 'Gekko', 'Cypher'], note: 'Explosive site hits, post-plant value, trap control.' },
+  Breeze: { agents: ['Jett', 'Viper', 'Cypher', 'Sova', 'KAY/O'], note: 'Long sightlines favor Jett, Viper wall, recon, lurk control.' },
+  Corrode: { agents: ['Raze', 'Omen', 'Viper', 'Cypher', 'Fade'], note: 'Safe starter comp until team develops comfort.' },
+  Fracture: { agents: ['Raze', 'Brimstone', 'Cypher', 'Breach', 'Fade'], note: 'Fast pressure and layered utility from both sides.' },
+  Haven: { agents: ['Jett', 'Omen', 'Killjoy', 'Sova', 'Breach'], note: 'Three-site map: recon, stun, sentinel info valuable.' },
+  Icebox: { agents: ['Jett', 'Viper', 'Killjoy', 'Sova', 'Harbor'], note: 'Viper/Harbor cross open space and vertical hits.' },
+  Lotus: { agents: ['Raze', 'Omen', 'Killjoy', 'Fade', 'Viper'], note: 'Space-taking, site anchoring, execute utility.' },
+  Pearl: { agents: ['Jett', 'Astra', 'Killjoy', 'Fade', 'Harbor'], note: 'Controller flexibility and strong site-retake tools.' },
+  Split: { agents: ['Raze', 'Omen', 'Cypher', 'Breach', 'Viper'], note: 'Mid pressure, trap value, layered execute control.' },
+  Sunset: { agents: ['Neon', 'Omen', 'Cypher', 'Breach', 'Sova'], note: 'Fast entry, mid control, info tools for retake.' }
+};
+
+let agents = [], selectedPlayers = TEAM.slice(0, 5), lineup = {}, locked = false, currentPicking = null;
+
+const $ = id => document.getElementById(id);
+
+const save = () => localStorage.setItem('takeoff-state', JSON.stringify({
+  selectedPlayers, lineup, locked,
+  opponent: $('opponent').value,
+  date: $('matchDate').value,
+  time: $('matchTime').value,
+  event: $('eventType').value,
+  map: $('mapSelect').value
+}));
+
+function toast(msg) {
+  const toastEl = $('toast');
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  setTimeout(() => toastEl.classList.remove('show'), 2800);
+}
+
+async function loadAgents() {
+  try {
+    const response = await fetch('https://valorant-api.com/v1/agents?isPlayableCharacter=true');
+    const json = await response.json();
+    agents = json.data.map(a => ({
+      displayName: a.displayName,
+      role: a.role?.displayName || 'Unknown',
+      displayIcon: a.displayIcon,
+      fullPortrait: a.fullPortrait || a.displayIcon
+    })).sort((a, b) => a.displayName.localeCompare(b.displayName));
+  } catch (e) {
+    console.error('Agent API error:', e);
+    agents = FALLBACK_AGENTS;
+  }
+  renderAll();
+}
+
+function restore() {
+  MAPS.forEach(m => $('mapSelect').appendChild(new Option(m, m)));
+  const saved = JSON.parse(localStorage.getItem('takeoff-state') || 'null');
+  if (saved) {
+    selectedPlayers = saved.selectedPlayers || selectedPlayers;
+    lineup = saved.lineup || {};
+    locked = !!saved.locked;
+    $('opponent').value = saved.opponent || '';
+    $('matchDate').value = saved.date || '';
+    $('matchTime').value = saved.time || '';
+    $('eventType').value = saved.event || 'Scrim';
+    $('mapSelect').value = saved.map || 'Ascent';
+  } else {
+    $('mapSelect').value = 'Ascent';
+    loadRecommended(false);
+  }
+}
+
+function agentByName(n) {
+  return agents.find(a => a.displayName.toLowerCase() === String(n || '').toLowerCase())
+    || FALLBACK_AGENTS.find(a => a.displayName === n)
+    || { displayName: n || 'Pick Agent', role: '', fullPortrait: '', displayIcon: '' };
+}
+
+function currentMap() {
+  return $('mapSelect').value || MAPS[0];
+}
+
+function renderPlayers() {
+  $('playerCount').textContent = `${selectedPlayers.length}/5 active`;
+  $('playerGrid').innerHTML = TEAM.map(p => `<label class="player"><input type="checkbox" data-player="${p}" ${selectedPlayers.includes(p) ? 'checked' : ''} ${locked ? 'disabled' : ''}> <span>${p}</span></label>`).join('');
+  $('benchList').textContent = TEAM.filter(p => !selectedPlayers.includes(p)).join(', ') || 'None';
+  
+  document.querySelectorAll('[data-player]').forEach(cb => {
+    cb.addEventListener('change', e => {
+      const player = e.target.dataset.player;
+      if (e.target.checked) {
+        if (selectedPlayers.length >= 5) {
+          e.target.checked = false;
+          return toast('Only 5 players can be active.');
+        }
+        selectedPlayers.push(player);
+      } else {
+        selectedPlayers = selectedPlayers.filter(x => x !== player);
+        delete lineup[player];
+      }
+      save();
+      renderAll();
+    });
+  });
+}
+
+function renderLineup() {
+  $('lineupGrid').innerHTML = selectedPlayers.map(p => {
+    const agent = agentByName(lineup[p]);
+    const img = agent.fullPortrait || agent.displayIcon;
+    return `<div class="slot ${locked ? 'locked-slot' : ''}">
+      <div class="slot-top">
+        <span class="slot-player">${p}</span>
+        <span class="role-pill">${agent.role || 'Open'}</span>
       </div>
-      <div id="recommendedGrid" class="recommended-grid"></div>
-      <p class="hint">Recommended comps are starting points. Your team can still choose any agent, and the app will warn instead of blocking unusual comps.</p>
-    </section>
-
-    <section class="panel wide">
-      <div class="panel-head">
-        <h2>📚 History</h2>
-        <button id="clearHistoryBtn" class="ghost">Clear History</button>
+      <div class="agent-img" data-pick="${p}">
+        ${img ? `<img src="${img}" alt="${agent.displayName}">` : `<div class="empty">Click to pick<br><b>${agent.displayName}</b></div>`}
       </div>
-      <div id="historyList" class="history-list"></div>
-    </section>
-  </main>
+      <div class="slot-bottom">
+        <button class="secondary" data-pick="${p}">${agent.displayName || 'Pick Agent'}</button>
+      </div>
+    </div>`;
+  }).join('');
+  
+  document.querySelectorAll('[data-pick]').forEach(el => {
+    el.addEventListener('click', () => openPicker(el.dataset.pick));
+  });
+}
 
-  <dialog id="agentModal" class="agent-modal">
-    <div class="modal-head">
-      <div><h3 id="modalTitle">Pick Agent</h3><p id="modalSub"></p></div>
-      <button id="closeModal" class="ghost">✕</button>
-    </div>
-    <div id="agentGrid" class="agent-grid"></div>
-  </dialog>
+function renderRecommended() {
+  const comp = COMPS[currentMap()] || COMPS.Ascent;
+  $('mapNote').textContent = comp.note;
+  $('recommendedGrid').innerHTML = comp.agents.map((name, i) => {
+    const agent = agentByName(name);
+    return `<div class="rec"><b>${i + 1}. ${agent.displayName}</b><span class="mini">${agent.role || ''}</span></div>`;
+  }).join('');
+}
 
-  <div id="toast" class="toast"></div>
-  <script src="app.js"></script>
+function renderStats() {
+  const counts = { Duelist: 0, Controller: 0, Initiator: 0, Sentinel: 0 };
+  Object.values(lineup).forEach(name => {
+    const role = agentByName(name).role;
+    if (counts[role] != null) counts[role]++;
+  });
+
+  $('roleStats').innerHTML = Object.entries(counts).map(([role, count]) =>
+    `<div class="stat"><span class="mini">${role}</span><strong>${count}</strong></div>`
+  ).join('');
+
+  let warnings = [];
+  if (selectedPlayers.length < 5) warnings.push('Choose 5 active players');
+  if (counts.Controller < 1) warnings.push('No Controller selected');
+  if (counts.Initiator < 1) warnings.push('No Initiator selected');
+  if (counts.Sentinel < 1) warnings.push('No Sentinel selected');
+  if (counts.Duelist > 2) warnings.push('More than 2 Duelists');
+  if (Object.keys(lineup).length < selectedPlayers.length) warnings.push('Some players need agents');
+
+  $('warnings').innerHTML = warnings.length ? warnings.map(w => `<span class="warn">⚠ ${w}</span>`).join('') : '<span class="warn good">✅ Lineup playable</span>';
+
+  const rec = (COMPS[currentMap()] || COMPS.Ascent).agents;
+  let score = 0;
+  selectedPlayers.forEach(p => { if (rec.includes(lineup[p])) score++; });
+  $('metaScore').textContent = Math.round(score / 5 * 100) + '%';
+}
+
+function renderHistory() {
+  const history = JSON.parse(localStorage.getItem('takeoff-history') || '[]');
+  $('historyList').innerHTML = history.length ? history.map(x => `<div class="hist">
+    <b>${x.map} vs ${x.opponent || 'TBD'}</b>
+    <p class="mini">${x.date || ''} ${x.time || ''} • ${x.event}</p>
+    ${Object.entries(x.lineup).map(([p, a]) => `<div>${p} → ${a}</div>`).join('')}
+  </div>`).join('') : '<p class="mini">No locked comps yet.</p>';
+}
+
+function renderHeader() {
+  $('lockBadge').textContent = locked ? 'LOCKED' : 'UNLOCKED';
+  $('lockBadge').className = 'badge ' + (locked ? 'locked' : 'unlocked');
+  $('matchTitle').textContent = ($('opponent').value ? `vs ${$('opponent').value}` : 'NEW MATCH');
+  $('matchMeta').textContent = `${currentMap()} • ${$('eventType').value} • ${$('matchDate').value || 'No date'} ${$('matchTime').value || ''}`;
+}
+
+function renderAll() {
+  renderHeader();
+  renderPlayers();
+  renderLineup();
+  renderRecommended();
+  renderStats();
+  renderHistory();
+}
+
+function loadRecommended(doToast = true) {
+  const comp = (COMPS[currentMap()] || COMPS.Ascent).agents;
+  selectedPlayers.forEach((p, i) => lineup[p] = comp[i]);
+  if (doToast) toast('Recommended comp loaded');
+  save();
+  renderAll();
+}
+
+function openPicker(player) {
+  if (locked) return toast('Unlock the comp first.');
+  currentPicking = player;
+  $('modalTitle').textContent = `Pick Agent for ${player}`;
+  renderAgentGrid();
+  $('agentModal').showModal();
+}
+
+function renderAgentGrid() {
+  const query = $('agentSearch').value.toLowerCase();
+  const roleFilter = $('roleFilter').value;
+  const used = new Set(Object.entries(lineup).filter(([p]) => p !== currentPicking).map(([, a]) => a));
+
+  $('agentGrid').innerHTML = agents
+    .filter(a => (roleFilter === 'All' || a.role === roleFilter) && a.displayName.toLowerCase().includes(query))
+    .map(a => {
+      const disabled = used.has(a.displayName);
+      return `<div class="agent-card ${disabled ? 'disabled' : ''}" data-agent="${a.displayName}">
+        ${a.displayIcon ? `<img src="${a.displayIcon}" alt="${a.displayName}">` : ''}
+        <b>${a.displayName}</b>
+        <span>${disabled ? 'Already picked' : a.role}</span>
+      </div>`;
+    }).join('');
+
+  document.querySelectorAll('[data-agent]').forEach(card => {
+    card.addEventListener('click', () => {
+      if (card.classList.contains('disabled')) return toast('That agent is already picked.');
+      lineup[currentPicking] = card.dataset.agent;
+      $('agentModal').close();
+      save();
+      renderAll();
+    });
+  });
+}
+
+function summary() {
+  return `TEAM TAKE OFF - VALORANT LINEUP
+${$('eventType').value}${$('opponent').value ? ` vs ${$('opponent').value}` : ''}
+Map: ${currentMap()}
+Date: ${$('matchDate').value || 'TBD'} ${$('matchTime').value || ''}
+
+${selectedPlayers.map(p => `${p} - ${lineup[p] || 'OPEN'}`).join('\n')}
+
+Bench/Subs: ${TEAM.filter(p => !selectedPlayers.includes(p)).join(', ') || 'None'}`;
+}
+
+function copySummary() {
+  const text = summary();
+  
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text)
+      .then(() => toast('✓ Summary copied to clipboard'))
+      .catch(() => fallbackCopy(text));
+  } else {
+    fallbackCopy(text);
+  }
+}
+
+function fallbackCopy(text) {
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.style.position = 'fixed';
+  textarea.style.left = '-999999px';
+  document.body.appendChild(textarea);
+  textarea.select();
+  try {
+    document.execCommand('copy');
+    toast('✓ Summary copied to clipboard');
+  } catch (err) {
+    toast('Failed to copy - try again');
+    console.error('Copy error:', err);
+  }
+  document.body.removeChild(textarea);
+}
+
+function bind() {
+  ['opponent', 'matchDate', 'matchTime', 'eventType', 'mapSelect'].forEach(id => {
+    $(id).addEventListener('change', () => { save(); renderAll(); });
+  });
+
+  $('loadRecommendedBtn').addEventListener('click', () => loadRecommended(true));
+  
+  $('saveMapCompBtn').addEventListener('click', () => {
+    localStorage.setItem('takeoff-map-' + currentMap(), JSON.stringify(lineup));
+    toast('Map comp saved');
+  });
+
+  $('loadSavedMapBtn').addEventListener('click', () => {
+    const saved = JSON.parse(localStorage.getItem('takeoff-map-' + currentMap()) || 'null');
+    if (!saved) return toast('No saved comp for this map yet.');
+    lineup = saved;
+    save();
+    renderAll();
+    toast('Saved map comp loaded');
+  });
+
+  $('lockBtn').addEventListener('click', () => {
+    if (selectedPlayers.length !== 5) return toast('Choose exactly 5 players first.');
+    locked = true;
+    const history = JSON.parse(localStorage.getItem('takeoff-history') || '[]');
+    history.unshift({
+      opponent: $('opponent').value,
+      date: $('matchDate').value,
+      time: $('matchTime').value,
+      event: $('eventType').value,
+      map: currentMap(),
+      lineup: { ...lineup },
+      at: new Date().toISOString()
+    });
+    localStorage.setItem('takeoff-history', JSON.stringify(history.slice(0, 50)));
+    save();
+    renderAll();
+    toast('✓ Comp locked + saved');
+  });
+
+  $('unlockBtn').addEventListener('click', () => {
+    locked = false;
+    save();
+    renderAll();
+    toast('Unlocked');
+  });
+
+  $('copyBtn').addEventListener('click', copySummary);
+
+  $('clearHistoryBtn').addEventListener('click', () => {
+    if (confirm('Clear all comp history?')) {
+      localStorage.removeItem('takeoff-history');
+      renderHistory();
+      toast('History cleared');
+    }
+  });
+
+  $('newMatchBtn').addEventListener('click', () => {
+    locked = false;
+    lineup = {};
+    $('opponent').value = '';
+    $('matchDate').value = '';
+    $('matchTime').value = '';
+    $('eventType').value = 'Scrim';
+    save();
+    renderAll();
+    toast('New match started');
+  });
+
+  $('closeModal').addEventListener('click', () => $('agentModal').close());
+  $('agentSearch').addEventListener('input', renderAgentGrid);
+  $('roleFilter').addEventListener('change', renderAgentGrid);
+}
+
+restore();
+bind();
+loadAgents();
+</script>
 </body>
 </html>
