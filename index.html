@@ -17,6 +17,9 @@
       --red: #cc0000;
       --red-dark: #990000;
       --red-accent: #ff0000;
+      --neon-pink: #ff1493;
+      --neon-blue: #00d4ff;
+      --neon-purple: #b300ff;
       --border: rgba(212, 175, 55, 0.2);
       --border-hover: rgba(212, 175, 55, 0.4);
       --shadow-gold: 0 0 20px rgba(212, 175, 55, 0.15);
@@ -53,8 +56,8 @@
       content: "";
       position: fixed;
       inset: 0;
-      background: radial-gradient(circle at 20% 50%, rgba(204, 0, 0, 0.1), transparent 50%),
-                  radial-gradient(circle at 80% 50%, rgba(212, 175, 55, 0.08), transparent 50%);
+      background: radial-gradient(circle at 20% 50%, rgba(255, 20, 147, 0.08), transparent 50%),
+                  radial-gradient(circle at 80% 50%, rgba(0, 212, 255, 0.08), transparent 50%);
       pointer-events: none;
       z-index: 0;
     }
@@ -72,18 +75,18 @@
       padding: 40px;
       max-width: 1400px;
       margin: 0 auto;
-      border-bottom: 2px solid var(--gold);
-      box-shadow: inset 0 -20px 40px rgba(212, 175, 55, 0.1);
+      border-bottom: 2px solid var(--neon-pink);
+      box-shadow: inset 0 -20px 40px rgba(255, 20, 147, 0.1);
     }
 
     .eyebrow {
       margin: 0 0 12px;
-      color: var(--gold);
+      color: var(--neon-pink);
       letter-spacing: 0.3em;
       font-weight: 900;
       font-size: 0.9rem;
       text-transform: uppercase;
-      text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+      text-shadow: 0 0 10px rgba(255, 20, 147, 0.6), 0 0 20px rgba(0, 212, 255, 0.3);
     }
 
     .hero h1 {
@@ -92,8 +95,12 @@
       margin: 0;
       text-transform: uppercase;
       letter-spacing: -0.03em;
-      text-shadow: 0 0 30px rgba(212, 175, 55, 0.3), 0 0 60px rgba(204, 0, 0, 0.2);
-      color: #f5f5f5;
+      background: linear-gradient(90deg, var(--neon-pink) 0%, var(--neon-blue) 50%, var(--neon-pink) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: none;
+      filter: drop-shadow(0 0 20px rgba(255, 20, 147, 0.4)) drop-shadow(0 0 20px rgba(0, 212, 255, 0.3));
     }
 
     .sub {
@@ -106,8 +113,8 @@
 
     .status-card {
       background: var(--panel-light);
-      border: 2px solid var(--gold);
-      box-shadow: 0 0 20px rgba(212, 175, 55, 0.2), inset 0 0 20px rgba(212, 175, 55, 0.05);
+      border: 2px solid var(--neon-pink);
+      box-shadow: 0 0 20px rgba(255, 20, 147, 0.3), inset 0 0 20px rgba(255, 20, 147, 0.05);
       backdrop-filter: blur(10px);
       border-radius: 8px;
       padding: 24px;
@@ -130,17 +137,17 @@
     }
 
     .unlocked {
-      background: rgba(212, 175, 55, 0.2);
-      color: var(--gold);
-      border: 1px solid var(--gold);
-      box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+      background: rgba(0, 212, 255, 0.2);
+      color: var(--neon-blue);
+      border: 1px solid var(--neon-blue);
+      box-shadow: 0 0 10px rgba(0, 212, 255, 0.4);
     }
 
     .locked {
-      background: rgba(204, 0, 0, 0.2);
-      color: var(--red-accent);
-      border: 1px solid var(--red-accent);
-      box-shadow: 0 0 10px rgba(204, 0, 0, 0.3);
+      background: rgba(255, 20, 147, 0.2);
+      color: var(--neon-pink);
+      border: 1px solid var(--neon-pink);
+      box-shadow: 0 0 10px rgba(255, 20, 147, 0.4);
     }
 
     .app {
@@ -155,8 +162,8 @@
 
     .panel {
       background: var(--panel);
-      border: 1px solid var(--border);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(212, 175, 55, 0.05);
+      border: 1px solid rgba(255, 20, 147, 0.2);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(255, 20, 147, 0.03);
       backdrop-filter: blur(10px);
       border-radius: 8px;
       padding: 24px;
@@ -164,8 +171,8 @@
     }
 
     .panel:hover {
-      border-color: var(--border-hover);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(212, 175, 55, 0.08), 0 0 20px rgba(212, 175, 55, 0.1);
+      border-color: rgba(255, 20, 147, 0.4);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(255, 20, 147, 0.08), 0 0 20px rgba(255, 20, 147, 0.1);
     }
 
     .wide {
@@ -179,15 +186,16 @@
       gap: 12px;
       margin-bottom: 18px;
       padding-bottom: 12px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid rgba(255, 20, 147, 0.2);
     }
 
     .head h2 {
       margin: 0;
       font-size: 1.15rem;
-      color: var(--gold);
+      color: var(--neon-pink);
       text-transform: uppercase;
       letter-spacing: 0.1em;
+      text-shadow: 0 0 10px rgba(255, 20, 147, 0.5);
     }
 
     .mini {
@@ -217,7 +225,7 @@
 
     input, select {
       width: 100%;
-      border: 1px solid var(--border);
+      border: 1px solid rgba(255, 20, 147, 0.2);
       background: var(--bg);
       color: var(--text);
       border-radius: 4px;
@@ -228,78 +236,77 @@
     }
 
     input:hover, select:hover {
-      border-color: var(--border-hover);
-      box-shadow: inset 0 0 10px rgba(212, 175, 55, 0.1);
+      border-color: rgba(255, 20, 147, 0.4);
+      box-shadow: inset 0 0 10px rgba(255, 20, 147, 0.1);
     }
 
     input:focus, select:focus {
-      border-color: var(--gold);
-      box-shadow: inset 0 0 10px rgba(212, 175, 55, 0.15), 0 0 10px rgba(212, 175, 55, 0.2);
+      border-color: var(--neon-pink);
+      box-shadow: inset 0 0 10px rgba(255, 20, 147, 0.15), 0 0 10px rgba(255, 20, 147, 0.2);
       background: rgba(10, 10, 10, 0.8);
     }
 
     button {
-      border: 1px solid var(--gold);
+      border: 1px solid var(--neon-pink);
       border-radius: 4px;
       padding: 12px 18px;
       font-weight: 900;
-      color: var(--bg);
-      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: #fff;
+      background: linear-gradient(135deg, var(--neon-pink), var(--neon-blue));
       cursor: pointer;
       transition: all 0.2s ease;
       font-family: 'Courier New', monospace;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       font-size: 0.85rem;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-      box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 5px 15px rgba(255, 20, 147, 0.3);
     }
 
     button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(212, 175, 55, 0.35);
-      background: linear-gradient(135deg, var(--gold-light), var(--gold));
+      box-shadow: 0 8px 20px rgba(255, 20, 147, 0.5), 0 0 20px rgba(0, 212, 255, 0.3);
+      background: linear-gradient(135deg, var(--neon-blue), var(--neon-pink));
     }
 
     button:active {
       transform: translateY(0);
-      box-shadow: 0 3px 10px rgba(212, 175, 55, 0.2);
+      box-shadow: 0 3px 10px rgba(255, 20, 147, 0.3);
     }
 
     button.secondary {
       background: transparent;
-      color: var(--gold);
-      border: 1px solid var(--gold);
+      color: var(--neon-pink);
+      border: 1px solid var(--neon-pink);
       box-shadow: none;
     }
 
     button.secondary:hover {
-      background: rgba(212, 175, 55, 0.1);
-      box-shadow: inset 0 0 15px rgba(212, 175, 55, 0.2);
+      background: rgba(255, 20, 147, 0.1);
+      box-shadow: inset 0 0 15px rgba(255, 20, 147, 0.2);
     }
 
     button.ghost {
       background: transparent;
-      color: var(--gold);
-      border: 1px solid var(--border);
+      color: var(--neon-pink);
+      border: 1px solid rgba(255, 20, 147, 0.4);
       box-shadow: none;
     }
 
     button.ghost:hover {
-      background: rgba(212, 175, 55, 0.08);
-      border-color: var(--border-hover);
+      background: rgba(255, 20, 147, 0.08);
+      border-color: rgba(255, 20, 147, 0.6);
     }
 
     button.danger {
-      background: linear-gradient(135deg, var(--red), var(--red-dark));
+      background: linear-gradient(135deg, var(--neon-pink), #ff1493);
       color: #fff;
-      border-color: var(--red-accent);
-      box-shadow: 0 5px 15px rgba(204, 0, 0, 0.3);
+      border-color: var(--neon-pink);
+      box-shadow: 0 5px 15px rgba(255, 20, 147, 0.4);
     }
 
     button.danger:hover {
-      box-shadow: 0 8px 25px rgba(204, 0, 0, 0.5);
-      background: linear-gradient(135deg, var(--red-accent), var(--red));
+      box-shadow: 0 8px 25px rgba(255, 20, 147, 0.6);
     }
 
     .quick, .lock-row, .tools {
@@ -320,9 +327,9 @@
 
     .player {
       padding: 14px;
-      border: 1px solid var(--border);
+      border: 1px solid rgba(255, 20, 147, 0.2);
       border-radius: 4px;
-      background: rgba(212, 175, 55, 0.03);
+      background: rgba(255, 20, 147, 0.02);
       display: flex;
       gap: 10px;
       align-items: center;
@@ -331,9 +338,9 @@
     }
 
     .player:hover {
-      background: rgba(212, 175, 55, 0.08);
-      border-color: var(--border-hover);
-      box-shadow: 0 0 10px rgba(212, 175, 55, 0.1);
+      background: rgba(255, 20, 147, 0.08);
+      border-color: rgba(255, 20, 147, 0.4);
+      box-shadow: 0 0 10px rgba(255, 20, 147, 0.1);
     }
 
     .player input {
@@ -344,10 +351,172 @@
     .bench {
       margin-top: 16px;
       padding: 12px;
-      border: 1px solid var(--border);
+      border: 1px solid rgba(255, 20, 147, 0.2);
       border-radius: 4px;
-      background: rgba(204, 0, 0, 0.05);
+      background: rgba(255, 20, 147, 0.03);
       color: var(--text-muted);
+    }
+
+    .weekly-schedule {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .day-slot {
+      border: 2px solid rgba(255, 20, 147, 0.3);
+      border-radius: 8px;
+      padding: 20px;
+      background: rgba(255, 20, 147, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    .day-slot.selected {
+      border-color: var(--neon-pink);
+      background: rgba(255, 20, 147, 0.12);
+      box-shadow: 0 0 15px rgba(255, 20, 147, 0.3);
+    }
+
+    .day-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 20, 147, 0.2);
+    }
+
+    .day-name {
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: var(--neon-pink);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .day-toggle {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .toggle-checkbox {
+      width: 50px;
+      height: 28px;
+      appearance: none;
+      background: rgba(255, 20, 147, 0.2);
+      border: 1px solid rgba(255, 20, 147, 0.4);
+      border-radius: 14px;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .toggle-checkbox:checked {
+      background: var(--neon-pink);
+      border-color: var(--neon-pink);
+      box-shadow: 0 0 10px rgba(255, 20, 147, 0.5);
+    }
+
+    .toggle-checkbox::after {
+      content: '';
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      background: white;
+      border-radius: 50%;
+      top: 1px;
+      left: 1px;
+      transition: all 0.3s ease;
+    }
+
+    .toggle-checkbox:checked::after {
+      left: 23px;
+    }
+
+    .team-roster-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .roster-card {
+      position: relative;
+      border: 2px solid rgba(255, 20, 147, 0.3);
+      border-radius: 8px;
+      padding: 16px;
+      background: linear-gradient(135deg, rgba(255, 20, 147, 0.08), rgba(0, 212, 255, 0.05));
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .roster-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 20, 147, 0.2) 0%, transparent 50%, rgba(0, 212, 255, 0.2) 100%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .roster-card:hover::before {
+      opacity: 1;
+    }
+
+    .roster-card.active {
+      border-color: var(--neon-pink);
+      box-shadow: 0 0 20px rgba(255, 20, 147, 0.4), inset 0 0 20px rgba(255, 20, 147, 0.1);
+      background: linear-gradient(135deg, rgba(255, 20, 147, 0.15), rgba(0, 212, 255, 0.1));
+    }
+
+    .roster-card-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .player-name {
+      font-weight: 900;
+      font-size: 0.9rem;
+      color: var(--neon-pink);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      letter-spacing: 0.05em;
+    }
+
+    .player-role {
+      font-size: 0.75rem;
+      color: var(--neon-blue);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .agent-selection {
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      border-radius: 6px;
+      padding: 12px;
+      background: rgba(0, 212, 255, 0.05);
+      margin-top: 12px;
+    }
+
+    .agent-selection label {
+      font-size: 0.75rem;
+      color: var(--neon-blue);
+      margin: 0;
+    }
+
+    .agent-selection select {
+      border-color: rgba(0, 212, 255, 0.3);
+      margin-top: 6px;
+      font-size: 0.9rem;
+    }
+
+    .agent-selection select:focus {
+      border-color: var(--neon-blue);
+      box-shadow: inset 0 0 10px rgba(0, 212, 255, 0.15), 0 0 10px rgba(0, 212, 255, 0.2);
     }
 
     .lineup {
@@ -358,7 +527,7 @@
 
     .slot {
       background: var(--panel-light);
-      border: 1px solid var(--border);
+      border: 1px solid rgba(255, 20, 147, 0.2);
       border-radius: 4px;
       overflow: hidden;
       position: relative;
@@ -366,12 +535,12 @@
     }
 
     .slot:hover {
-      border-color: var(--border-hover);
-      box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+      border-color: rgba(255, 20, 147, 0.4);
+      box-shadow: 0 0 15px rgba(255, 20, 147, 0.15);
     }
 
     .slot.locked-slot {
-      outline: 2px solid rgba(204, 0, 0, 0.4);
+      outline: 2px solid rgba(255, 20, 147, 0.4);
     }
 
     .slot-top {
@@ -379,20 +548,20 @@
       display: flex;
       justify-content: space-between;
       gap: 8px;
-      background: rgba(212, 175, 55, 0.05);
-      border-bottom: 1px solid var(--border);
+      background: rgba(255, 20, 147, 0.05);
+      border-bottom: 1px solid rgba(255, 20, 147, 0.2);
     }
 
     .slot-player {
       font-weight: 900;
-      color: var(--gold);
+      color: var(--neon-pink);
       font-size: 0.95rem;
     }
 
     .role-pill {
       font-size: 0.7rem;
       color: #000;
-      background: var(--gold);
+      background: var(--neon-blue);
       border-radius: 2px;
       padding: 4px 8px;
       font-weight: 900;
@@ -405,20 +574,20 @@
       display: flex;
       align-items: end;
       justify-content: center;
-      background: linear-gradient(160deg, rgba(204, 0, 0, 0.1), rgba(212, 175, 55, 0.05));
+      background: linear-gradient(160deg, rgba(255, 20, 147, 0.1), rgba(0, 212, 255, 0.05));
       cursor: pointer;
       transition: all 0.2s ease;
     }
 
     .agent-img:hover {
-      background: linear-gradient(160deg, rgba(204, 0, 0, 0.15), rgba(212, 175, 55, 0.1));
+      background: linear-gradient(160deg, rgba(255, 20, 147, 0.15), rgba(0, 212, 255, 0.1));
     }
 
     .agent-img img {
       max-height: 180px;
       max-width: 100%;
       object-fit: contain;
-      filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 10px rgba(212, 175, 55, 0.1));
+      filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 10px rgba(255, 20, 147, 0.1));
     }
 
     .agent-img .empty {
@@ -445,15 +614,15 @@
     .stat {
       padding: 16px;
       border-radius: 4px;
-      background: rgba(212, 175, 55, 0.05);
-      border: 1px solid var(--border);
+      background: rgba(255, 20, 147, 0.05);
+      border: 1px solid rgba(255, 20, 147, 0.2);
       text-align: center;
     }
 
     .stat strong {
       display: block;
       font-size: 2rem;
-      color: var(--gold);
+      color: var(--neon-blue);
       margin-bottom: 4px;
     }
 
@@ -465,9 +634,9 @@
     }
 
     .warn {
-      border: 1px solid rgba(212, 175, 55, 0.4);
-      background: rgba(212, 175, 55, 0.08);
-      color: var(--gold);
+      border: 1px solid rgba(255, 20, 147, 0.4);
+      background: rgba(255, 20, 147, 0.08);
+      color: var(--neon-pink);
       border-radius: 3px;
       padding: 8px 12px;
       font-size: 0.8rem;
@@ -477,9 +646,9 @@
     }
 
     .good {
-      border-color: rgba(107, 255, 158, 0.3);
-      background: rgba(107, 255, 158, 0.08);
-      color: #6bff9e;
+      border-color: rgba(0, 212, 255, 0.3);
+      background: rgba(0, 212, 255, 0.08);
+      color: var(--neon-blue);
     }
 
     .recommended, .history {
@@ -490,43 +659,39 @@
 
     .rec, .hist {
       padding: 14px;
-      border: 1px solid var(--border);
-      background: rgba(212, 175, 55, 0.05);
+      border: 1px solid rgba(255, 20, 147, 0.2);
+      background: rgba(255, 20, 147, 0.05);
       border-radius: 4px;
       transition: all 0.2s ease;
     }
 
     .rec:hover, .hist:hover {
-      background: rgba(212, 175, 55, 0.1);
-      border-color: var(--border-hover);
-      box-shadow: 0 0 10px rgba(212, 175, 55, 0.1);
+      background: rgba(255, 20, 147, 0.1);
+      border-color: rgba(255, 20, 147, 0.4);
+      box-shadow: 0 0 10px rgba(255, 20, 147, 0.1);
     }
 
     .rec b, .hist b {
       display: block;
-      color: var(--gold);
+      color: var(--neon-pink);
       margin-bottom: 4px;
       font-weight: 900;
       text-transform: uppercase;
     }
 
     .hist {
-      background: rgba(204, 0, 0, 0.05);
-    }
-
-    .hist b {
-      color: var(--red-accent);
+      background: rgba(255, 20, 147, 0.05);
     }
 
     .modal {
-      border: 2px solid var(--gold);
+      border: 2px solid var(--neon-pink);
       border-radius: 4px;
       background: var(--bg);
       color: var(--text);
       max-width: 1000px;
       width: 96%;
       padding: 0;
-      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.9), 0 0 30px rgba(212, 175, 55, 0.3);
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.9), 0 0 30px rgba(255, 20, 147, 0.4);
     }
 
     .modal::backdrop {
@@ -539,13 +704,13 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 2px solid var(--gold);
-      background: rgba(212, 175, 55, 0.05);
+      border-bottom: 2px solid var(--neon-pink);
+      background: rgba(255, 20, 147, 0.08);
     }
 
     .modal-head h3 {
       margin: 0;
-      color: var(--gold);
+      color: var(--neon-pink);
       font-size: 1.2rem;
       text-transform: uppercase;
       letter-spacing: 0.1em;
@@ -562,9 +727,9 @@
 
     .agent-card {
       position: relative;
-      border: 1px solid var(--border);
+      border: 1px solid rgba(255, 20, 147, 0.2);
       border-radius: 4px;
-      background: rgba(212, 175, 55, 0.05);
+      background: rgba(255, 20, 147, 0.05);
       padding: 10px;
       cursor: pointer;
       overflow: hidden;
@@ -572,20 +737,20 @@
     }
 
     .agent-card:hover {
-      background: rgba(212, 175, 55, 0.12);
-      border-color: var(--border-hover);
-      box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+      background: rgba(255, 20, 147, 0.12);
+      border-color: rgba(255, 20, 147, 0.4);
+      box-shadow: 0 0 15px rgba(255, 20, 147, 0.15);
       transform: translateY(-3px);
     }
 
     .agent-card.disabled {
       opacity: 0.3;
       cursor: not-allowed;
-      background: rgba(204, 0, 0, 0.05);
+      background: rgba(255, 20, 147, 0.02);
     }
 
     .agent-card.disabled:hover {
-      background: rgba(204, 0, 0, 0.05);
+      background: rgba(255, 20, 147, 0.02);
       transform: none;
     }
 
@@ -598,7 +763,7 @@
     .agent-card b {
       display: block;
       margin-top: 6px;
-      color: var(--gold);
+      color: var(--neon-pink);
       font-weight: 900;
       font-size: 0.85rem;
     }
@@ -616,15 +781,15 @@
       right: 20px;
       bottom: 20px;
       background: var(--panel-light);
-      border: 2px solid var(--gold);
+      border: 2px solid var(--neon-pink);
       border-radius: 4px;
       padding: 14px 18px;
       opacity: 0;
       transform: translateY(20px);
       transition: all 0.3s ease;
       z-index: 1000;
-      box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
-      color: var(--gold);
+      box-shadow: 0 0 20px rgba(255, 20, 147, 0.4);
+      color: var(--neon-pink);
       font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 0.1em;
@@ -641,8 +806,8 @@
       font-size: 0.85rem;
       margin-top: 12px;
       padding: 12px;
-      border-left: 2px solid var(--gold);
-      background: rgba(212, 175, 55, 0.05);
+      border-left: 2px solid var(--neon-pink);
+      background: rgba(255, 20, 147, 0.05);
       border-radius: 2px;
     }
 
@@ -715,20 +880,24 @@
       .stats {
         grid-template-columns: 1fr;
       }
+
+      .team-roster-cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
   </style>
 </head>
 <body>
 <header class="hero">
   <div>
-    <p class="eyebrow">TACTICAL COMMANDER</p>
+    <p class="eyebrow">⚔️ TACTICAL COMMANDER ⚔️</p>
     <h1>TEAM TAKE OFF</h1>
-    <p class="sub">Valorant tactical comp manager. Double sentinel meta, recommended comps per map, full agent portrait picker, lock history, and saved strats.</p>
+    <p class="sub">Weekly roster builder. Lock team compositions for 2 days per week. Full agent selection, double sentinel meta, save strats, and match history.</p>
   </div>
   <div class="status-card">
-    <span id="lockBadge" class="badge unlocked">UNLOCKED</span>
-    <strong id="matchTitle">NEW MATCH</strong>
-    <small id="matchMeta" class="mini">Pick a map, choose 5, lock your comp.</small>
+    <span id="lockBadge" class="badge unlocked">READY</span>
+    <strong id="matchTitle">MATCH SETUP</strong>
+    <small id="matchMeta" class="mini">Build your weekly roster</small>
   </div>
 </header>
 
@@ -750,6 +919,13 @@
     <button id="saveMapCompBtn" class="secondary">Save Map Comp</button>
     <button id="loadSavedMapBtn" class="secondary">Load Saved Map</button>
   </div>
+</section>
+
+<section class="panel wide">
+  <div class="head">
+    <h2>📋 Weekly Roster Builder</h2>
+  </div>
+  <div class="weekly-schedule" id="weeklySchedule"></div>
 </section>
 
 <section class="panel">
@@ -816,6 +992,7 @@
 
 <script>
 const TEAM = ['Young_Goosy', 'Kaji', 'Toon', 'Eternal', 'Jolteon', 'Menkyo', 'White Toe'];
+const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const MAPS = ['Abyss', 'Ascent', 'Bind', 'Breeze', 'Corrode', 'Fracture', 'Haven', 'Icebox', 'Lotus', 'Pearl', 'Split', 'Sunset'];
 const FALLBACK_AGENTS = [
   ['Brimstone', 'Controller'], ['Viper', 'Controller'], ['Omen', 'Controller'], ['Killjoy', 'Sentinel'],
@@ -843,11 +1020,13 @@ const COMPS = {
 };
 
 let agents = [], selectedPlayers = TEAM.slice(0, 5), lineup = {}, locked = false, currentPicking = null;
+let weeklyRoster = {}; // { dayName: { playerName: agentName, ... }, ... }
+let weeklySchedule = { day1: null, day2: null }; // Track which 2 days are selected
 
 const $ = id => document.getElementById(id);
 
 const save = () => localStorage.setItem('takeoff-state', JSON.stringify({
-  selectedPlayers, lineup, locked,
+  selectedPlayers, lineup, locked, weeklyRoster, weeklySchedule,
   opponent: $('opponent').value,
   date: $('matchDate').value,
   time: $('matchTime').value,
@@ -886,6 +1065,8 @@ function restore() {
     selectedPlayers = saved.selectedPlayers || selectedPlayers;
     lineup = saved.lineup || {};
     locked = !!saved.locked;
+    weeklyRoster = saved.weeklyRoster || {};
+    weeklySchedule = saved.weeklySchedule || { day1: null, day2: null };
     $('opponent').value = saved.opponent || '';
     $('matchDate').value = saved.date || '';
     $('matchTime').value = saved.time || '';
@@ -927,6 +1108,91 @@ function renderPlayers() {
       }
       save();
       renderAll();
+    });
+  });
+}
+
+function renderWeeklySchedule() {
+  $('weeklySchedule').innerHTML = DAYS.map(day => {
+    const isSelected = weeklySchedule.day1 === day || weeklySchedule.day2 === day;
+    const selectedCount = (weeklySchedule.day1 ? 1 : 0) + (weeklySchedule.day2 ? 1 : 0);
+    const canSelect = isSelected || selectedCount < 2;
+    
+    return `<div class="day-slot ${isSelected ? 'selected' : ''}" data-day="${day}">
+      <div class="day-header">
+        <span class="day-name">${day}</span>
+        <div class="day-toggle">
+          <label>${isSelected ? 'SELECTED' : 'SELECT'}</label>
+          <input type="checkbox" class="toggle-checkbox day-toggle-checkbox" data-day="${day}" ${isSelected ? 'checked' : ''} ${!canSelect && !isSelected ? 'disabled' : ''}>
+        </div>
+      </div>
+      <div class="team-roster-cards" data-day-cards="${day}"></div>
+    </div>`;
+  }).join('');
+
+  document.querySelectorAll('.day-toggle-checkbox').forEach(cb => {
+    cb.addEventListener('change', e => {
+      const day = e.target.dataset.day;
+      if (e.target.checked) {
+        if (!weeklySchedule.day1) {
+          weeklySchedule.day1 = day;
+        } else if (!weeklySchedule.day2) {
+          weeklySchedule.day2 = day;
+        }
+      } else {
+        if (weeklySchedule.day1 === day) weeklySchedule.day1 = null;
+        if (weeklySchedule.day2 === day) weeklySchedule.day2 = null;
+      }
+      save();
+      renderWeeklySchedule();
+      renderDayRosterCards();
+    });
+  });
+
+  renderDayRosterCards();
+}
+
+function renderDayRosterCards() {
+  const selectedDays = [weeklySchedule.day1, weeklySchedule.day2].filter(d => d);
+  
+  selectedDays.forEach(day => {
+    const container = document.querySelector(`[data-day-cards="${day}"]`);
+    if (!container) return;
+    
+    container.innerHTML = selectedPlayers.map(player => {
+      const agent = weeklyRoster[day]?.[player];
+      const agentObj = agent ? agentByName(agent) : { role: '', displayName: 'Pick' };
+      
+      return `<div class="roster-card ${agent ? 'active' : ''}" data-day="${day}" data-player="${player}">
+        <div class="roster-card-content">
+          <div class="player-name">${player}</div>
+          <div class="player-role">${agentObj.role || 'Role'}</div>
+          <div class="agent-selection">
+            <label>Agent</label>
+            <select class="day-agent-select" data-day="${day}" data-player="${player}">
+              <option value="">Pick Agent...</option>
+              ${agents.map(a => `<option value="${a.displayName}" ${agent === a.displayName ? 'selected' : ''}>${a.displayName}</option>`).join('')}
+            </select>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+
+    container.querySelectorAll('.day-agent-select').forEach(select => {
+      select.addEventListener('change', e => {
+        const day = e.target.dataset.day;
+        const player = e.target.dataset.player;
+        const agent = e.target.value;
+        
+        if (!weeklyRoster[day]) weeklyRoster[day] = {};
+        if (agent) {
+          weeklyRoster[day][player] = agent;
+        } else {
+          delete weeklyRoster[day][player];
+        }
+        save();
+        renderDayRosterCards();
+      });
     });
   });
 }
@@ -1001,15 +1267,16 @@ function renderHistory() {
 }
 
 function renderHeader() {
-  $('lockBadge').textContent = locked ? 'LOCKED' : 'UNLOCKED';
+  $('lockBadge').textContent = locked ? 'LOCKED' : 'READY';
   $('lockBadge').className = 'badge ' + (locked ? 'locked' : 'unlocked');
-  $('matchTitle').textContent = ($('opponent').value ? `vs ${$('opponent').value}` : 'NEW MATCH');
+  $('matchTitle').textContent = ($('opponent').value ? `vs ${$('opponent').value}` : 'MATCH SETUP');
   $('matchMeta').textContent = `${currentMap()} • ${$('eventType').value} • ${$('matchDate').value || 'No date'} ${$('matchTime').value || ''}`;
 }
 
 function renderAll() {
   renderHeader();
   renderPlayers();
+  renderWeeklySchedule();
   renderLineup();
   renderRecommended();
   renderStats();
