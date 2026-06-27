@@ -722,7 +722,7 @@
   <div>
     <p class="eyebrow">TACTICAL COMMANDER</p>
     <h1>TEAM TAKE OFF</h1>
-    <p class="sub">Valorant tactical comp manager. Recommended comps per map, full agent portrait picker, lock history, and saved strats.</p>
+    <p class="sub">Valorant tactical comp manager. Double sentinel meta, recommended comps per map, full agent portrait picker, lock history, and saved strats.</p>
   </div>
   <div class="status-card">
     <span id="lockBadge" class="badge unlocked">UNLOCKED</span>
@@ -791,7 +791,7 @@
     <span id="mapNote" class="mini"></span>
   </div>
   <div id="recommendedGrid" class="recommended"></div>
-  <p class="hint">Recommended comps are starting points for your strat. You can still choose any agent. No duplicates allowed. App warns instead of forcing meta.</p>
+  <p class="hint">Double Sentinel meta for strong site lockdown & post-plant. Recommended comps are starting points for your strat. You can still choose any agent. No duplicates allowed. App warns instead of forcing meta.</p>
 </section>
 
 <section class="panel wide">
@@ -827,18 +827,18 @@ const FALLBACK_AGENTS = [
 ].map(([displayName, role]) => ({ displayName, role, displayIcon: '', fullPortrait: '' }));
 
 const COMPS = {
-  Abyss: { agents: ['Jett', 'Omen', 'Cypher', 'Sova', 'Breach'], note: 'Entry duelist, controller, anchor, recon, stun setup.' },
-  Ascent: { agents: ['Jett', 'Omen', 'Killjoy', 'Sova', 'KAY/O'], note: 'Strong mid control and classic execute utility.' },
-  Bind: { agents: ['Raze', 'Brimstone', 'Viper', 'Gekko', 'Cypher'], note: 'Explosive site hits, post-plant value, trap control.' },
-  Breeze: { agents: ['Jett', 'Viper', 'Cypher', 'Sova', 'KAY/O'], note: 'Long sightlines favor Jett, Viper wall, recon, lurk control.' },
-  Corrode: { agents: ['Raze', 'Omen', 'Viper', 'Cypher', 'Fade'], note: 'Safe starter comp until team develops comfort.' },
-  Fracture: { agents: ['Raze', 'Brimstone', 'Cypher', 'Breach', 'Fade'], note: 'Fast pressure and layered utility from both sides.' },
-  Haven: { agents: ['Jett', 'Omen', 'Killjoy', 'Sova', 'Breach'], note: 'Three-site map: recon, stun, sentinel info valuable.' },
-  Icebox: { agents: ['Jett', 'Viper', 'Killjoy', 'Sova', 'Harbor'], note: 'Viper/Harbor cross open space and vertical hits.' },
-  Lotus: { agents: ['Raze', 'Omen', 'Killjoy', 'Fade', 'Viper'], note: 'Space-taking, site anchoring, execute utility.' },
-  Pearl: { agents: ['Jett', 'Astra', 'Killjoy', 'Fade', 'Harbor'], note: 'Controller flexibility and strong site-retake tools.' },
-  Split: { agents: ['Raze', 'Omen', 'Cypher', 'Breach', 'Viper'], note: 'Mid pressure, trap value, layered execute control.' },
-  Sunset: { agents: ['Neon', 'Omen', 'Cypher', 'Breach', 'Sova'], note: 'Fast entry, mid control, info tools for retake.' }
+  Abyss: { agents: ['Raze', 'Omen', 'Killjoy', 'Cypher', 'Sova'], note: 'Double sentinel lockdown with entry duelist & recon. Strong anti-lurk setup.' },
+  Ascent: { agents: ['Raze', 'Omen', 'Chamber', 'Killjoy', 'KAY/O'], note: 'Chamber for operator defense + site coverage. Raze for aggressive sightline control.' },
+  Bind: { agents: ['Raze', 'Brimstone', 'Killjoy', 'Cypher', 'Gecko'], note: 'Double sentinel trap setup + explosive duelist. Heavy post-plant lockdown.' },
+  Breeze: { agents: ['Jett', 'Omen', 'Chamber', 'Cypher', 'Sova'], note: 'Jett mobility vs long sightlines + Chamber for operator spots. Double sentinel lurk denial.' },
+  Corrode: { agents: ['Raze', 'Omen', 'Killjoy', 'Cypher', 'Sova'], note: 'Double sentinel site anchor + explosive entry. Safe starter comp with solid utility.' },
+  Fracture: { agents: ['Raze', 'Brimstone', 'Chamber', 'Killjoy', 'Fade'], note: 'Chamber for operator crossfire. Double sentinel covers both A & B from vantage points.' },
+  Haven: { agents: ['Raze', 'Omen', 'Killjoy', 'Chamber', 'Sova'], note: 'Three-site lockdown with Chamber for site security + double sentinel coverage.' },
+  Icebox: { agents: ['Jett', 'Viper', 'Killjoy', 'Cypher', 'Harbor'], note: 'Viper/Harbor cross open space + double sentinel anchors. Jett vertical mobility crucial.' },
+  Lotus: { agents: ['Raze', 'Omen', 'Killjoy', 'Deadlock', 'Fade'], note: 'Double sentinel with Deadlock cages + Raze for space-taking executes.' },
+  Pearl: { agents: ['Jett', 'Astra', 'Killjoy', 'Cypher', 'Fade'], note: 'Astra for map control + double sentinel retake power. Strong site-locking utility.' },
+  Split: { agents: ['Raze', 'Omen', 'Chamber', 'Killjoy', 'Sova'], note: 'Chamber operator anchor on site. Double sentinel anti-lurk with Raze tight angle clears.' },
+  Sunset: { agents: ['Raze', 'Omen', 'Killjoy', 'Cypher', 'Breach'], note: 'Double sentinel site anchoring + Raze entry & flash setup. Strong mid pressure.' }
 };
 
 let agents = [], selectedPlayers = TEAM.slice(0, 5), lineup = {}, locked = false, currentPicking = null;
@@ -977,11 +977,12 @@ function renderStats() {
   if (selectedPlayers.length < 5) warnings.push('Choose 5 active players');
   if (counts.Controller < 1) warnings.push('No Controller selected');
   if (counts.Initiator < 1) warnings.push('No Initiator selected');
-  if (counts.Sentinel < 1) warnings.push('No Sentinel selected');
+  if (counts.Sentinel < 2) warnings.push('Less than 2 Sentinels (meta is 2)');
+  if (counts.Duelist < 1) warnings.push('No Duelist selected');
   if (counts.Duelist > 2) warnings.push('More than 2 Duelists');
   if (Object.keys(lineup).length < selectedPlayers.length) warnings.push('Some players need agents');
 
-  $('warnings').innerHTML = warnings.length ? warnings.map(w => `<span class="warn">⚠ ${w}</span>`).join('') : '<span class="warn good">✅ Lineup playable</span>';
+  $('warnings').innerHTML = warnings.length ? warnings.map(w => `<span class="warn">⚠ ${w}</span>`).join('') : '<span class="warn good">✅ Double sentinel comp ready</span>';
 
   const rec = (COMPS[currentMap()] || COMPS.Ascent).agents;
   let score = 0;
